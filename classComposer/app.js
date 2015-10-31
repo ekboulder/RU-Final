@@ -4,7 +4,7 @@ var bodyParser = require('body-parser');
 
 // Connect to DB
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/passport-demo')
+mongoose.connect('mongodb://localhost/classComposerDb')
 
 // Auth Requires
 var session = require('express-session');
@@ -59,15 +59,16 @@ app.get('/api/me', function(req, res){
 	res.send(req.user)
 })
 
+app.get('/data/grade'), 
 
 // ***** IMPORTANT ***** //
 // By including this middleware (defined in our config/passport.js module.exports),
 // We can prevent unauthorized access to any route handler defined after this call
 // to .use()
-app.use(passportConfig.ensureAuthenticated);
+// app.use(passportConfig.ensureAuthenticated);
 
 // this should change to route to the logged in home page
-app.get('/', function(req, res){
+app.get('/loggedin/home.html', passportConfig.ensureAuthenticated, function(req, res){
   res.sendFile('/html/home.html', {root : './public'})
 });
 // app.get('/superSensitiveDataRoute')

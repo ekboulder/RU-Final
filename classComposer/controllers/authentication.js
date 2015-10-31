@@ -21,7 +21,7 @@ var performLogin = function(req, res, next, user){
     if(err) return next(err);
 
     // Otherwise, send the user to the homepage.
-    return res.redirect('/');
+    return res.redirect('/loggedin/home.html');                                                 //this is where i need to put the logged in page 
   });
 };
 
@@ -118,8 +118,8 @@ var authenticationController = {
     // Passport injects the logout method for us to call
     req.logout();
 
-    // Redirect back to the login page
-    res.redirect('/auth/login');
+    // Redirect back to the landing (index) page
+    res.redirect('/');
   }
 };
 
