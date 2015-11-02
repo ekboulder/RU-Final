@@ -1,5 +1,3 @@
-
-
 angular.module('ui.bootstrap')
 	.controller('CarouselCtrl', function ($scope) {
 		  $scope.myInterval = 5000;

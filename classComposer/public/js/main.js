@@ -28,7 +28,7 @@ app.service('scrollService', ['$timeout','$location', '$anchorScroll',
 // MainController
 app.controller('mainController', ['$scope', '$http','$mdBottomSheet','$mdSidenav', '$mdDialog','authService','scrollService', function($scope, $http, $mdBottomSheet, $mdSidenav, $mdDialog, authService, scrollService){
     
-
+	// Index.html
 		// For Authentication
 		authService.authCheck(function(user){
 			console.log('USER!', user)
@@ -39,144 +39,174 @@ app.controller('mainController', ['$scope', '$http','$mdBottomSheet','$mdSidenav
 
 		$scope.greeting = 'greeting'
 
+	//Home.html	
 
-//Think of moving all of this to the backend
+		// sideNav menu
+				$scope.toggleSidenav = function(menuId) {
+			    	$mdSidenav(menuId).toggle();
+			  	};
+			 	
+			 	$scope.menu = [
+				    {
+				      link : '',
+				      title: 'Dashboard',
+				      icon: 'dashboard',
+				    },
+				    {
+				      link : '',
+				      title: 'Settings',
+				      icon: 'edit',
+				    },
+				    {
+				      link : '',
+				      title: 'Student Assessments',
+				      icon: 'assessment',
+				    },
+				    {
+				      link : '',
+				      title: 'Class Composer',
+				      icon: 'group',
+				    },
+				  ];
 
-		// for controlling the input tabs
-    	$scope.step=[false,false,false,false]
+		//Think of moving all of this to the backend
 
-
-		$scope.states = ('AL AK AZ AR CA CO CT DE FL GA HI ID IL IN IA KS KY LA ME MD MA MI MN MS ' +
-    			'MO MT NE NV NH NJ NM NY NC ND OH OK OR PA RI SC SD TN TX UT VT VA WA WV WI ' +
-    			'WY').split(' ').map(function(state) {
-     	   		return {abbrev: state};
-    	  })
-
-    	$scope.grades = ('1 2 3 4 5 6 7 8').split(' ').map(function(grade) {
-    			return {'grade': grade}
-    	})
-
-    	$scope.inputTeacher = {
-    		firstname 	: "",
-    		lastName	: "",
-    		email		: "",
-    		grade 		: 1,
-    	}
-    	
-    	$scope.teachers = []
-
-    	$scope.addTeacher = function () {
-    		console.log($scope.inputTeacher)
-    		$scope.teachers.push($scope.inputTeacher)
-    			$scope.inputTeacher = {
-    			firstname 	: "",
-    			lastName	: "",
-    			email		: "",
-    			grade 		: 1,
-    		}
-
-    	}
+				// for controlling the input tabs
+		    	$scope.step=[false,false,false,false]
 
 
+				$scope.states = ('AL AK AZ AR CA CO CT DE FL GA HI ID IL IN IA KS KY LA ME MD MA MI MN MS ' +
+		    			'MO MT NE NV NH NJ NM NY NC ND OH OK OR PA RI SC SD TN TX UT VT VA WA WV WI ' +
+		    			'WY').split(' ').map(function(state) {
+		     	   		return {abbrev: state};
+		    	  })
+
+		    	$scope.grades = ('K First Second Third Fourth Fifth').split(' ').map(function(grade) {
+		    			return {'grade': grade}
+		    	})
+
+		// School Registration
+				$scope.inputSchool = {}
+				$scope.addSchool = function () {
+		    			//httpPOST
+		    	}
+
+		// Teachers intitialization, adding and sorting
+		    	$scope.inputTeacher = {}
+		    	$scope.teachers = []
+		    	$scope.addTeacher = function () {
+		    		$scope.teachers.push($scope.inputTeacher)
+		    		$scope.teachers = $scope.teachers.slice().reverse()
+		    		$scope.inputTeacher = {}
+
+		    	}
+
+		    	$scope.sortType     	= 'name'; // set the default sort type
+		  		$scope.sortReverse  	= false;  // set the default sort order
+		  		$scope.searchTeacher   	= '';     // set the default search/filter
+
+		    // 	$scope.sortPerson = function (persontype, sortingProperty) {
+		    // 		console.log("about to sort by", sortingProperty)
+		    		
+		    // 		$scope[personType].sort(function(personA, personB) {
+		    // 			console.log(personA[sortingProperty])
+		    // 			if (personA[sortingProperty] > personB[sortingProperty]) {
+						// 	return -1
+						// } else if (personA[sortingProperty] < personB[sortingProperty]) {
+						// 	return 1
+						// } else if (personA[sortingProperty] === personB[sortingProperty]) {
+						// 	return 0
+						// }
+
+		    // 		})
+		    // 	}
+
+		// Student intitialization, adding and sorting
+
+				$scope.inputStudent = {}
+		    	$scope.students = []
+				$scope.addStudent = function () {
+					$scope.students.push($scope.inputStudent)
+		    		$scope.students = $scope.students.slice().reverse()
+		    		$scope.inputStudent = {
+		    								firstName 			: "",
+		    								lastName 			: "",
+		    								grade 				: $scope.inputStudent.grade,
+		    								currentTeacherId 	: $scope.inputStudent.currentTeacherId,
+		    							}
+				}
+
+		//  IdentofierTags
+				$scope.inputIdentifierTag = {}
+		    	$scope.identifierTags = [
+		    							 {
+		    							 	tag 		: 'ELL',
+		    							 	description	: 'English Language Learner',
+		    							 },
+		    							 {
+		    							 	tag 		: 'GT',
+		    							 	description	: 'Gifted and Talented',
+		    							 },
+		    							 {
+		    							 	tag 		: 'IEP',
+		    							 	description	: 'Individualized Education Plan',
+		    							 },
+		    							 {
+		    							 	tag 		: 'SPE',
+		    							 	description	: 'Speech',
+		    							 },
+		    							 {
+		    							 	tag 		: '504',
+		    							 	description	: 'on a 504 Plan',
+		    							 },
+		    							 {
+		    							 	tag 		: 'PT',
+		    							 	description	: 'Physical Therapy',
+		    							 },
+		    							 {
+		    							 	tag 		: 'GPV',
+		    							 	description	: 'Great Parent Volunteer',
+		    							 },
+		    							 {
+		    							 	tag 		: 'BPL',
+		    							 	description	: 'On a Behavior Plan',
+		    							 },
+		    							]
+				$scope.addIdentifierTag = function () {
+					$scope.identifierTags.push($scope.inputIdentifierTag)
+		    		$scope.identifierTags = $scope.identifierTags.slice().reverse()
+		    		$scope.inputIdentifierTag = {}
+		    	}
 
 
-  
-  	
-	  	$scope.toggleSidenav = function(menuId) {
-	    	$mdSidenav(menuId).toggle();
-	  	};
-	 	
-	 	$scope.menu = [
-		    {
-		      link : '',
-		      title: 'Dashboard',
-		      icon: 'dashboard'
-		    },
-		    {
-		      link : '',
-		      title: 'Friends',
-		      icon: 'group'
-		    },
-		    {
-		      link : '',
-		      title: 'Messages',
-		      icon: 'message'
-		    }
-		  ];
-  
-		 $scope.admin = [
-		    {
-		      link : '',
-		      title: 'Trash',
-		      icon: 'delete'
-		    },
-		    {
-		      link : 'showListBottomSheet($event)',
-		      title: 'Settings',
-		      icon: 'settings'
-		    }
-		  ];
-  
-		 $scope.activity = [
-		      {
-		        what: 'Brunch this weekend?',
-		        who: 'Ali Conners',
-		        when: '3:08PM',
-		        notes: " I'll be in your neighborhood doing errands"
-		      },
-		      {
-		        what: 'Summer BBQ',
-		        who: 'to Alex, Scott, Jennifer',
-		        when: '3:08PM',
-		        notes: "Wish I could come out but I'm out of town this weekend"
-		      },
-		      {
-		        what: 'Oui Oui',
-		        who: 'Sandra Adams',
-		        when: '3:08PM',
-		        notes: "Do you have Paris recommendations? Have you ever been?"
-		      },
-		      {
-		        what: 'Birthday Gift',
-		        who: 'Trevor Hansen',
-		        when: '3:08PM',
-		        notes: "Have any ideas of what we should get Heidi for her birthday?"
-		      },
-		      {
-		        what: 'Recipe to try',
-		        who: 'Brian Holt',
-		        when: '3:08PM',
-		        notes: "We should eat this: Grapefruit, Squash, Corn, and Tomatillo tacos"
-		      },
-		    ];
-  
-  		 $scope.alert = '';
 
-		  $scope.showListBottomSheet = function($event) {
-		    $scope.alert = '';
-		    $mdBottomSheet.show({
-		      template: '<md-bottom-sheet class="md-list md-has-header"> <md-subheader>Settings</md-subheader> <md-list> <md-item ng-repeat="item in items"><md-item-content md-ink-ripple flex class="inset"> <a flex aria-label="{{item.name}}" ng-click="listItemClick($index)"> <span class="md-inline-list-icon-label">{{ item.name }}</span> </a></md-item-content> </md-item> </md-list></md-bottom-sheet>',
-		      controller: 'ListBottomSheetCtrl',
-		      targetEvent: $event
-		    }).then(function(clickedItem) {
-		      $scope.alert = clickedItem.name + ' clicked!';
-		    });
-		  };
-  
-		  $scope.showAdd = function(ev) {
-		  	console.log('we are in showAdd')
 
-		    $mdDialog.show({
-		      controller: DialogController,
-		      templateUrl: '/html/dialogueForm.html',
-		      targetEvent: ev,
-		    })
-		    .then(function(answer) {
-		      $scope.alert = 'You said the information was "' + answer + '".';
-		    }, function() {
-		      $scope.alert = 'You cancelled the dialog.';
-		    });
-		  };
+		// Modal display functions (see also the ModalCtrl js file)
+				$scope.showListBottomSheet = function($event) {
+				    $scope.alert = '';
+				    $mdBottomSheet.show({
+				      template: '<md-bottom-sheet class="md-list md-has-header"> <md-subheader>Settings</md-subheader> <md-list> <md-item ng-repeat="item in items"><md-item-content md-ink-ripple flex class="inset"> <a flex aria-label="{{item.name}}" ng-click="listItemClick($index)"> <span class="md-inline-list-icon-label">{{ item.name }}</span> </a></md-item-content> </md-item> </md-list></md-bottom-sheet>',
+				      controller: 'ListBottomSheetCtrl',
+				      targetEvent: $event
+				    }).then(function(clickedItem) {
+				      $scope.alert = clickedItem.name + ' clicked!';
+				    });
+				  };
+		  
+				  $scope.showAdd = function(ev) {
+				  	console.log('we are in showAdd')
+
+				    $mdDialog.show({
+				      controller: DialogController,
+				      templateUrl: '/html/dialogueForm.html',
+				      targetEvent: ev,
+				    })
+				    .then(function(answer) {
+				      $scope.alert = 'You said the information was "' + answer + '".';
+				    }, function() {
+				      $scope.alert = 'You cancelled the dialog.';
+				    });
+				  };
 }]);
 
 

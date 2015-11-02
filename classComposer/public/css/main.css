@@ -1,6 +1,11 @@
 /*Bootstrap UI Dependencies*/
 .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
 
+a:focus, span:focus {
+   outline: none;
+   border: 0;
+}
+
 /* Angular Toolbar https://material.angularjs.org/latest/demo/toolbar*/
 md-toolbar md-icon.md-default-theme {
   color: white; }
@@ -53,13 +58,9 @@ md-sidenav {
 }
 
 
-/**/
+/* for the tab modal*/
 #popupContainer {
   position: relative; }
-.debt-be-gone {
-  font-weight: bold;
-  color: blue;
-  text-decoration: underline; }
 .footer {
   width: 100%;
   text-align: center;
@@ -68,6 +69,14 @@ md-sidenav {
   font-size: 0.8em;
   margin-top: 50px; }
 
-.select {
-  margin : 0px;
+/*for the select options dropdown*/
+.dropDown {
+  padding-top : 20px;
 }
+
+/* for aligning the listing of teachers and students in the input forms to their headers*/
+.personListing {
+  padding-left: 16px;
+  margin-right: 16px;
+}
+

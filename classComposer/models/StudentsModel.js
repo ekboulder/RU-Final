@@ -18,7 +18,6 @@
         var StudentGradeProfileSchema = mongoose.Schema({
             studentId               :   {type : mongoose.Schema.ObjectId, ref:'Student'},
             grade                   :   {type : mongoose.Schema.ObjectId, ref:'Grade'},
-            
             currentTeacherId        :   {type : mongoose.Schema.ObjectId, ref:'Teacher'},
             year                    : Number,
             academicScores          : {
@@ -33,7 +32,7 @@
                                         Avg         : Number, //result of the above
                                       },
             rank                    : Number,                  //result of the bove
-            identifiedTags          : {type : mongoose.Schema.ObjectId, ref:'IdentifiedTags'}
+            identifiedTags          : {type : mongoose.Schema.ObjectId, ref:'IdentifiedTags'},
             specialRequests         : {
                                         targetTeacherId         :   {type : mongoose.Schema.ObjectId, ref:'Teacher'},
                                         combinedStudentIds      : [ {type : mongoose.Schema.ObjectId, ref:'Student'} ],
@@ -43,21 +42,15 @@
          })
         
         var IdentifiedTagsSchema = mongoose.schema({
-            studentId               : {type : mongoose.Schema.ObjectId, ref:'Student'} 
-            tags                    : {
-                                        GT           :{type: Boolean, default: false, },  
-                                        GPV          :{type: Boolean, default: false, }, 
-                                        IEP          :{type: Boolean, default: false, }, 
-                                        BPL          :{type: Boolean, default: false, }, 
-                                        ELL          :{type: Boolean, default: false, }, 
-                                        RCC          :{type: Boolean, default: false, }, 
-                                        RT           :{type: Boolean, default: false, }, 
-                                        SPE          :{type: Boolean, default: false, }, 
-                                        FOF          :{type: Boolean, default: false, }, 
-                                        PT           :{type: Boolean, default: false, }, 
-                                        KLG          :{type: Boolean, default: false, }, 
-                                        BEN          :{type: Boolean, default: false, }, 
-                                      }, 
+            schoolId                : {type : mongoose.Schema.ObjectId, ref:'School'},
+            studentId               : {type : mongoose.Schema.ObjectId, ref:'Student'},
+            Identifiers             : [
+                                        {
+                                            tag             : String,
+                                            description     : String,
+                                            value           : {type: Boolean, default: false, },
+                                        },
+                                      ], 
         })
                                             
         var ClassRoomSchema = mongoose.schema({
@@ -82,6 +75,7 @@
                                        },
             number                  : String,
             email                   : String,
+            IdentifiedTagsId        : {type : mongoose.Schema.ObjectId, ref:'IdentifiedTags'},
             contactPerson           : {type : mongoose.Schema.ObjectId, ref:'User'},
 
         })
