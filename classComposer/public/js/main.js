@@ -169,56 +169,82 @@ app.controller('mainController', ['$scope', '$http','$mdBottomSheet','$mdSidenav
 		    	}
 		    	var getSchoolSync = function (school) {
 		   				$scope.currentSchool = school
-
-
+		   				getTeachers(school._id)
 		  		}
 			//teachers	
 		    	$scope.currentTeachers = []
 		    	$scope.inputTeacher = {}
 		    	$scope.createTeacher = function () {
-						return httpService.httpRequest('POST', '/data/newTeacher', $scope.inputTeacher, createTeacherSync)	
+						return httpService.httpRequest('POST', '/data/newTeacher', $scope.inputTeacher, createTeacheSync)	
 		    	}
-		    	var createTeacherSync = function (newTeacher) {
+		    	var createTeacheSync = function (newTeacher) {
 		   				$scope.currentTeachers.push(newTeacher)
+		   				$scope.currentTeachers = $scope.currentTeachers.slice().reverse()
 		   				$scope.inputTeacher = {
 		   										school                  : {},                  
 									            user                    : {},
 									            firstName               : '',
 									            lastName                : '',
-									            grade                   : inputTeacher.grade,
+									            grade                   : $scope.inputTeacher.grade,
 									            email                   : '',
 									            studentsList            : [] 
 												}
-		   					
 		  		}
+		  		var getTeachers = function (schoolId) {
+		  			console.log(schoolId)
+		  			return httpService.httpRequest('GET', '/data/currentTeachers?id='+schoolId, {}, getTeachersSync)	
+		    	}
+		    	var getTeachersSync = function (teachersArray) {
+		    			$scope.currentTeachers = teachersArray
+		    			$scope.currentTeachers = $scope.currentTeachers.slice().reverse()
+		    	}
+		  		
+		    	$scope.inputIdentifierTag = {}
+		    	$scope.createIdentifierTag = function () {
+		    		return httpService.httpRequest('POST', '/data/newIdentifierTag', { schoolId: $scope.currentSchool._id , tag : $scope.inputIdentifierTag} , createSchoolSync)	
+		    	}
+		    	var createSchoolSync = function (school) {
+		    		$scope.currentSchool = school
+		    	}
+		    	$scope.deleteIdentifierTag = function (passedTag, identifiedTags) {
+		    		var selectedIndex;
+		    		var selectedChild = identifiedTags.filter(
+		    							function(child, index){
+												if(child.tag === passedTag){
+										    		selectedIndex = index
+										    		return true
+										    		}
+											})[0]	    			
+		    		return httpService.httpRequest('POST', '/data/deleteIdentifierTag', { schoolId: $scope.currentSchool._id , index : selectedIndex} , deleteIdentifierTagSync)	
+		    	}
+		    	var deleteIdentifierTagSync = function (school) {
+		    		$scope.currentSchool = school
+		    	}
 
+// ng-click="deleteIdentifierTag(identified.tag, currentSchool.identifiedTags)"
+// dnd-moved=            "onMove(student.id,     listByGender.studentList)"
 
-		    		$scope.inputIdentifierTag = {}
-			  	//update (modify identifier tag list)
-					$scope.addIdentifierTag = function () {
-						$scope.identifierTags.push($scope.inputIdentifierTag)
-			    		$scope.identifierTags = $scope.identifierTags.slice().reverse()
-			    		$scope.inputIdentifierTag = {}
-			    	}
+// $scope.onMove = function(passedId, listByGender){
+// var selectedIndex;
+// var selectedChild = listByGender.filter(
+// function(child, index){
+// 		if(child.id === passedId){
+//     		selectedIndex = index
+//     		return true
+//     		}
+// 	})[0]
+// listByGender.splice(selectedIndex, 1) //splice to remove from Array.
+
+// updateStats()
+// console.log(selectedIndex, selectedChild)
+// // newList.push(selectedChild)
+// // oldList.splice(selectedIndex, 1)
+
+// }
 
 		    	
 
-		    // 	$scope.sortPerson = function (persontype, sortingProperty) {
-		    // 		console.log("about to sort by", sortingProperty)
-		    		
-		    // 		$scope[personType].sort(function(personA, personB) {
-		    // 			console.log(personA[sortingProperty])
-		    // 			if (personA[sortingProperty] > personB[sortingProperty]) {
-						// 	return -1
-						// } else if (personA[sortingProperty] < personB[sortingProperty]) {
-						// 	return 1
-						// } else if (personA[sortingProperty] === personB[sortingProperty]) {
-						// 	return 0
-						// }
-
-		    // 		})
-		    // 	}
-
+		   
 		// Student intitialization, adding and sorting
 
 				$scope.inputStudent = {}
@@ -235,6 +261,21 @@ app.controller('mainController', ['$scope', '$http','$mdBottomSheet','$mdSidenav
 				}
 
 		
+		 // 	$scope.sortPerson = function (persontype, sortingProperty) {
+		    // 		console.log("about to sort by", sortingProperty)
+		    		
+		    // 		$scope[personType].sort(function(personA, personB) {
+		    // 			console.log(personA[sortingProperty])
+		    // 			if (personA[sortingProperty] > personB[sortingProperty]) {
+						// 	return -1
+						// } else if (personA[sortingProperty] < personB[sortingProperty]) {
+						// 	return 1
+						// } else if (personA[sortingProperty] === personB[sortingProperty]) {
+						// 	return 0
+						// }
+
+		    // 		})
+		    // 	}
 
 
 

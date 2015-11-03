@@ -50,7 +50,7 @@ var defaultIdentifiers =[
 		var currentSchool = function(req,res){
 			// console.log(req.user)
 			// console.log('currentSchool id', req.user.school.id)
-			Models.School.findOne({_id: req.user.school.id},function (err, school){
+			Models.School.findOne({_id: req.user.school.id}, function (err, school){
 				if (err) {
 					console.log(err)
 					res.send('could not find the school')
@@ -110,11 +110,60 @@ var defaultIdentifiers =[
  			})
  		}
 
+ 		var currentTeachers = function (req, res){
+ 			Models.Teacher.find({school : req.query.id}, function(err, teachersArray) {
+ 				if (err) {
+ 					console.log(err)
+ 					res.send('could not find the array of teachers')
+ 				} else{
+ 					console.log('TEACHER ARRAY')
+ 					console.log(teachersArray)
+ 					res.send(teachersArray)
+ 				}
+ 				})
+ 			}
 
+ 	//Tags
+ 		var addTag = function(req, res){
+ 			Models.School.findOne({_id: req.body.schoolId}, function (err, school){
+				if (err) {
+					console.log(err)
+					res.send('could not find the school')
+				}
+				else {
+					school.identifiedTags.push(req.body.tag)
+					//push is not a mongoose function, so we need to save the modified document
+					school.markModified('identifiedTags')
+					school.save()
+					res.send(school)
+				}
+			})
+ 			// Models.School.update({_id: req.body.schoolId}, {$set: {identifiedTags.push(req.body.tag)}}).exec()
+ 		}
+		var removeTag = function(req, res){
+			console.log ('remove function', req.body)
+ 			Models.School.findOne({_id: req.body.schoolId}, function (err, school){
+				if (err) {
+					console.log(err)
+					res.send('could not find the school')
+				}
+				else {
+					console.log('FOUND SCHOOL')
+					school.identifiedTags.splice(req.body.index, 1)
+					//splice is not a mongoose function, so we need to save the modified document
+					school.markModified('identifiedTags')
+					school.save()
+					res.send(school)
+				}
+			})
+ 		}
 
 module.exports = {
 	addSchool				: addSchool,
 	currentSchool			: currentSchool,
-	// currentTeachers 		: currentTeachers,
+	currentTeachers 		: currentTeachers,
 	addTeacher 				: addTeacher,
+	addTag					: addTag,
+	removeTag				: removeTag,
+
 }

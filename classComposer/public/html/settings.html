@@ -339,7 +339,7 @@
                                         </md-input-container> 
    
                                         <md-input-container> 
-                                          <md-button ng-click="addIdentifierTag()" class="md-raised md-primary">Add Identifier</md-button>
+                                          <md-button ng-click="createIdentifierTag()" class="md-raised md-primary">Add Identifier</md-button>
                                         </md-input-container> 
                                     
                               </div>       
@@ -376,7 +376,7 @@
                                             <div flex="70"class="personListing">{{identified.description}}</div>
                                             
                                             
-                                            <md-button class="md-icon-button" ng-click="IdentifierTags.splice(key,1)">
+                                            <md-button class="md-icon-button" ng-click="deleteIdentifierTag(identified.tag, currentSchool.identifiedTags)">
                                                 <md-icon md-svg-src="/imgs/bin_delete.svg" aria-label="delete Item"></md-icon>
                                             </md-button>
                                              

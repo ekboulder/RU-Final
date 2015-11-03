@@ -76,8 +76,10 @@ app.get('/loggedIn/settings.html', loggedInCtrl.getLoggedInSettings)
 // accessing data from the database
 app.get('/data/currentSchool', schoolCtrl.currentSchool)
 app.post('/data/newSchool', schoolCtrl.addSchool)
-// app.get('/data/currentTeachers', schoolCtrl.currentTeachers)
+app.get('/data/currentTeachers', schoolCtrl.currentTeachers)
 app.post('/data/newTeacher', schoolCtrl.addTeacher)
+app.post('/data/newIdentifierTag', schoolCtrl.addTag)
+app.post('/data/deleteIdentifierTag', schoolCtrl.removeTag)
 
 
 // Creating Server and Listening for Connections \\
