@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var School = require('../models/schoolModel')
 var bcrypt = require('bcryptjs');
 
 /**
@@ -9,25 +10,29 @@ var bcrypt = require('bcryptjs');
  * saving if a duplicate entry is found.
  */
 var userSchema = mongoose.Schema({
-  username: {
-	  type: String,
-    required: true,
-    unique: true
-  },
-  email: {
-    type: String,
-    required: true,
-    unique: true
-  },
-  password: {
-    type: String,
-    required: true
-  },
-  role  :{
-    type: String,
-    required: false,
-  }
-});
+  username  : {
+          	  type: String,
+              required: true,
+              unique: true
+              },
+  email     : {
+              type: String,
+              required: true,
+              unique: true
+              },
+  password  : {
+              type: String,
+              required: true
+              },
+  role      : {
+                type: String,
+                required: true,
+              },
+  school    : {
+                assigned   : {type: Boolean, default: false, },
+                id  : {type : mongoose.Schema.ObjectId, ref:'School'},
+              },
+  });
 
 /**
  * This allows us to hook into the pre-save DB flow. Our

@@ -21,7 +21,7 @@ var performLogin = function(req, res, next, user){
     if(err) return next(err);
 
     // Otherwise, send the user to the homepage.
-    return res.redirect('/loggedin/home.html');                                                 //this is where i need to put the logged in page 
+    return res.redirect('/loggedIn/home.html/#');                                                 //this is where i need to put the logged in page 
   });
 };
 
@@ -79,9 +79,14 @@ var authenticationController = {
     // It is safer to send as post, however, because the actual data won't
     // show up in browser history.
     var user = new User({
-      username: req.body.username,
-      password: req.body.password,
-      email: req.body.email
+      username  : req.body.username,
+      password  : req.body.password,
+      email     : req.body.email,
+      role      : req.body.role,
+      school    : {
+                    assigned  : req.body.school.assigned,
+                    id        : req.body.school.id,
+                  },
     });
 
     // Now that the user is created, we'll attempt to save them to the
@@ -124,4 +129,4 @@ var authenticationController = {
 };
 
 // Export our controller methods
-module.exports = authenticationController;
+module.exports = authenticationController

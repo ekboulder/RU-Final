@@ -41,7 +41,7 @@
     
          })
         
-        var IdentifiedTagsSchema = mongoose.schema({
+        var IdentifiedTagsSchema = mongoose.Schema({
             schoolId                : {type : mongoose.Schema.ObjectId, ref:'School'},
             studentId               : {type : mongoose.Schema.ObjectId, ref:'Student'},
             Identifiers             : [
@@ -53,7 +53,7 @@
                                       ], 
         })
                                             
-        var ClassRoomSchema = mongoose.schema({
+        var ClassRoomSchema = mongoose.Schema({
             teacher                 :   {type : mongoose.Schema.ObjectId, ref:'Teacher'},
             grade                   :   {type : mongoose.Schema.ObjectId, ref:'Grade'},
             students                : [ {type : mongoose.Schema.ObjectId, ref:'Student'} ],
@@ -64,23 +64,23 @@
 
        
 
-        var SchoolSchema = mongoose.schema({
+        var SchoolSchema = mongoose.Schema({
+            contactPerson           : {type : mongoose.Schema.ObjectId, ref:'User'},
             name                    : String,
             address                 : {
                                         streetAdress1 : String,
-                                        StreetAdress2 : String.
-                                        City          : String,
+                                        streetAdress2 : String, 
+                                        city          : String,
                                         State         : String,
-                                        Postal Code   : String, 
+                                        postalCode   : String, 
                                        },
             number                  : String,
             email                   : String,
-            IdentifiedTagsId        : {type : mongoose.Schema.ObjectId, ref:'IdentifiedTags'},
-            contactPerson           : {type : mongoose.Schema.ObjectId, ref:'User'},
-
+            // IdentifiedTagsId        : {type : mongoose.Schema.ObjectId, ref:'IdentifiedTags'},
+            IdentifiedTagsId        : [],
         })
 
-         var GradeSchema = mongoose.schema({
+         var GradeSchema = mongoose.Schema({
             gradeName               : String,
             year                    : Number,
             students                : [ {type : mongoose.Schema.ObjectId, ref:'Student'} ],
@@ -89,7 +89,7 @@
 
         })
 
-        var TeacherSchema = mongoose.schema({
+        var TeacherSchema = mongoose.Schema({
             user                    : {type : mongoose.Schema.ObjectId, ref:'User'},
             firstName               : String,
             lastName                : String,
@@ -103,13 +103,24 @@
             
         })
 
+        var PrincipalSchema = mongoose.Schema({
+            user                    : {type : mongoose.Schema.ObjectId, ref:'User'},
+            firstName               : String,
+            lastName                : String,
+            school                  : [ {type : mongoose.Schema.ObjectId, ref:'School'} ], 
+            email                   : String,
+            number                  : String,
+    
+        })
+
         var Student             = mongoose.model('Student', studentSchema),
             StudentGradeProfile = mongoose.model('StudentGradeProfile', StudentGradeProfileSchema),
             IdentifiedTags      = mongoose.model('IdentifiedTags', IdentifiedTagsSchema), 
             ClassRoom           = mongoose.model('ClassRoom', ClassRoomSchema),
             Grade               = mongoose.model('Grade', GradeSchema), 
             School              = mongoose.model('School', SchoolSchema),
-            Teacher             = mongoose.model('Teacher', TeacherSchema)  
+            Teacher             = mongoose.model('Teacher', TeacherSchema), 
+            Principal           = mongoose.model('Principal', PrincipalSchema) 
 
         
 
@@ -122,6 +133,7 @@ module.exports = {
                 Grade                   : Grade,
                 School                  : School,
                 Teacher                 : Teacher,
+                Principal               :Principal,
 }             
 
              

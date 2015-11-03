@@ -1,16 +1,46 @@
-var app = angular.module('App', ['ui.bootstrap','ngMaterial', 'ngMdIcons']);
+var app = angular.module('App', ['ui.bootstrap','ngMaterial', 'ngMdIcons', 'ngRoute']);
 
 // Authentication service
 app.service('authService', ['$http', '$location', function($http){
 		
-		this.authCheck = function(cb){
+		this.authCheck = function(callBack){
 			$http.get('/api/me')
 				.then( function(returnData){
-					cb(returnData.data)
+					callBack(returnData.data)
 
 				})
 		}			
 	}])
+
+//http Service
+app.service('httpService', ['$http', function($http){
+
+		 // @param method	: GET, POST, Delete
+		 // @param url 	`	: String
+		 // @param data 	: Object
+
+
+		 this.httpRequest = function (method, url, data, callBack) {
+		
+			console.log('http please', method, url, data)
+			
+			$http({
+				method 	: method,										//'POST'
+				url		: url, 											//'/api/translate'
+				data	: data,											//translationRequest,
+			}).then(
+			function (returnData){
+				//console.log('return data:',returnData.data)
+				callBack(returnData.data)
+			},
+			function (error){
+				console.log('error')
+				translationRequest.result = 'Please try again'
+			})
+		}
+}])
+
+
 
 // Scroll service
 app.service('scrollService', ['$timeout','$location', '$anchorScroll',
@@ -24,54 +54,86 @@ app.service('scrollService', ['$timeout','$location', '$anchorScroll',
 	    };
   }])
 
+// Define our routes
+app.config(['$routeProvider', function($routeProvider){
+		// No need to define #, it is assumed
+		$routeProvider
+			.when('/', {
+				templateUrl : '/html/dashboard.html',
+				controller : 'mainController'
+			})
+			.when('/loggedIn/dashboard', {
+				templateUrl : '/html/dashboard.html',
+				controller : 'mainController'
+			})
+			.when('/loggedIn/settings', {
+				templateUrl : '/html/settings.html',
+				controller : 'mainController'
+			})
+			.when('/error', {
+				templateUrl : 'html/error.html',
+				controller : 'errorController'
+			})
+			.otherwise({
+				redirectTo : '/error'
+			})
+ }])
+
+
 
 // MainController
-app.controller('mainController', ['$scope', '$http','$mdBottomSheet','$mdSidenav', '$mdDialog','authService','scrollService', function($scope, $http, $mdBottomSheet, $mdSidenav, $mdDialog, authService, scrollService){
+app.controller('mainController', ['$scope', '$http','$mdBottomSheet','$mdSidenav', '$mdDialog','authService','scrollService', 'httpService', function($scope, $http, $mdBottomSheet, $mdSidenav, $mdDialog, authService, scrollService, httpService){
     
-	// Index.html
+		
 		// For Authentication
-		authService.authCheck(function(user){
-			console.log('USER!', user)
-			$scope.user = user
-		})
+			authService.authCheck(function(user) {
+				console.log('USER!', user) 
+				$scope.user = user
+				if (user.school.assigned) {
+					initializeInputSchool()
+				}
+			})
+	
 		// for the Bootstrap scroll
-		$scope.scrollTo = scrollService.scroll
-
-		$scope.greeting = 'greeting'
-
-	//Home.html	
+			$scope.scrollTo = scrollService.scroll
+			$scope.greeting = 'greeting'
 
 		// sideNav menu
 				$scope.toggleSidenav = function(menuId) {
 			    	$mdSidenav(menuId).toggle();
 			  	};
 			 	
+			 	$scope.pageTitle = "Dashboard"
+
 			 	$scope.menu = [
 				    {
-				      link : '',
+				      link : '/loggedIn/home.html/#/loggedIn/dashboard',
 				      title: 'Dashboard',
 				      icon: 'dashboard',
 				    },
 				    {
-				      link : '',
+				      link : '/loggedIn/home.html/#/loggedIn/settings',
 				      title: 'Settings',
 				      icon: 'edit',
 				    },
 				    {
-				      link : '',
+				      link : '/loggedIn/home.html/#/loggedIn/assessment',
 				      title: 'Student Assessments',
 				      icon: 'assessment',
 				    },
 				    {
-				      link : '',
+				      link : '/loggedIn/home.html/#/loggedIn/classComposer',
 				      title: 'Class Composer',
-				      icon: 'group',
+				      icon: 'classComposer',
 				    },
 				  ];
 
-		//Think of moving all of this to the backend
+				  $scope.updatePageTitle = function (title) {
+				  	console.log('page title:', title)
+				  	$scope.pageTitle = title 
+				  }
 
-				// for controlling the input tabs
+		// for controlling the input tabs and forms
 		    	$scope.step=[false,false,false,false]
 
 
@@ -85,11 +147,40 @@ app.controller('mainController', ['$scope', '$http','$mdBottomSheet','$mdSidenav
 		    			return {'grade': grade}
 		    	})
 
-		// School Registration
+		// School and Tag Registration
+				
+
 				$scope.inputSchool = {}
+				var initializeInputSchool = function () {
+					return httpService.httpRequest('GET', '/data/defaultSchool', {}, initializeInputSchoolSync)
+				}
+				var initializeInputSchoolSync = function (serverResponse) {
+					$scope.inputSchool = serverResponse
+				}
+				
+
+
+				$scope.currentSchool = {}
 				$scope.addSchool = function () {
-		    			//httpPOST
+						// console.log($scope.inputSchool)
+						return httpService.httpRequest('POST', '/data/newSchool', $scope.inputSchool, addSchoolSync)	
 		    	}
+		    	var addSchoolSync = function (serverResponse) {
+		   				$scope.currentSchool = serverResponse
+		   				// console.log('School', $scope.currentSchool)		
+		  		}
+
+
+
+				$scope.inputIdentifierTag = {}
+			  	//update (modify identifier tag list)
+					$scope.addIdentifierTag = function () {
+						$scope.identifierTags.push($scope.inputIdentifierTag)
+			    		$scope.identifierTags = $scope.identifierTags.slice().reverse()
+			    		$scope.inputIdentifierTag = {}
+			    	}
+  
+				
 
 		// Teachers intitialization, adding and sorting
 		    	$scope.inputTeacher = {}
@@ -136,47 +227,7 @@ app.controller('mainController', ['$scope', '$http','$mdBottomSheet','$mdSidenav
 		    							}
 				}
 
-		//  IdentofierTags
-				$scope.inputIdentifierTag = {}
-		    	$scope.identifierTags = [
-		    							 {
-		    							 	tag 		: 'ELL',
-		    							 	description	: 'English Language Learner',
-		    							 },
-		    							 {
-		    							 	tag 		: 'GT',
-		    							 	description	: 'Gifted and Talented',
-		    							 },
-		    							 {
-		    							 	tag 		: 'IEP',
-		    							 	description	: 'Individualized Education Plan',
-		    							 },
-		    							 {
-		    							 	tag 		: 'SPE',
-		    							 	description	: 'Speech',
-		    							 },
-		    							 {
-		    							 	tag 		: '504',
-		    							 	description	: 'on a 504 Plan',
-		    							 },
-		    							 {
-		    							 	tag 		: 'PT',
-		    							 	description	: 'Physical Therapy',
-		    							 },
-		    							 {
-		    							 	tag 		: 'GPV',
-		    							 	description	: 'Great Parent Volunteer',
-		    							 },
-		    							 {
-		    							 	tag 		: 'BPL',
-		    							 	description	: 'On a Behavior Plan',
-		    							 },
-		    							]
-				$scope.addIdentifierTag = function () {
-					$scope.identifierTags.push($scope.inputIdentifierTag)
-		    		$scope.identifierTags = $scope.identifierTags.slice().reverse()
-		    		$scope.inputIdentifierTag = {}
-		    	}
+		
 
 
 

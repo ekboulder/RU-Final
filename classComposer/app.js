@@ -36,6 +36,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Routes \\
 var authenticationController = require('./controllers/authentication');
+var loggedInCtrl 	= require('./controllers/loggedInCtrl');
+var schoolCtrl 		= require('./controllers/schoolCtrl')
 
 // This wil point to the Loged-out home page
 app.get('/', function(req, res){
@@ -65,18 +67,18 @@ app.get('/data/grade'),
 // By including this middleware (defined in our config/passport.js module.exports),
 // We can prevent unauthorized access to any route handler defined after this call
 // to .use()
-// app.use(passportConfig.ensureAuthenticated);
+app.use(passportConfig.ensureAuthenticated);
 
-// this should change to route to the logged in home page
-app.get('/loggedin/home.html', passportConfig.ensureAuthenticated, function(req, res){
-  res.sendFile('/html/home.html', {root : './public'})
-});
-// app.get('/superSensitiveDataRoute')
+// routing between pages
+app.get('/loggedIn/home.html',loggedInCtrl.getLoggedInHome)
+app.get('/loggedIn/settings.html', loggedInCtrl.getLoggedInSettings)
 
+// accessing data from the database
+app.get('/data/defaultSchool', schoolCtrl.getDefaultSchool)
+app.post('/data/newSchool', schoolCtrl.addSchool)
 
 // Creating Server and Listening for Connections \\
 var port = 3000
 app.listen(port, function(){
   console.log('Server running on port ' + port);
-
 });
