@@ -165,7 +165,7 @@
                                     
                                     
                                       
-                                        <md-list-item layout="row" flex="100" ng-repeat="(key, teacher) in currentTeachers | orderBy:sortType:sortReverse | filter: SearchTerm" class="md-whiteframe-5dp">
+                                        <md-list-item layout="row" flex="100" ng-repeat="(key, teacher) in currentTeachers | orderBy:sortType:sortReverse | filter: SearchTerm track by $index" class="md-whiteframe-5dp">
                                             
                                             <div flex="33"class="personListing">{{teacher.firstName}}</div>
                                             <div flex="33"class="personListing">{{teacher.lastName}}</div>
@@ -289,7 +289,7 @@
                                             
                                             
                                         <!-- Display student list -->
-                                            <md-list-item layout="row" flex="100" ng-repeat="(key, student) in students | filter : SearchTerm | orderBy:sortType:sortReverse" class="md-whiteframe-5dp">
+                                            <md-list-item layout="row" flex="100" ng-repeat="(key, student) in students | filter : SearchTerm | orderBy:sortType:sortReverse track by $index" class="md-whiteframe-5dp">
                                                  
                                                 <div flex="20" class="personListing">{{student.firstName}}</div>
                                                 <div flex="20" class="personListing">{{student.lastName}}</div>
@@ -370,7 +370,7 @@
                                     
                                     
                                     
-                                        <md-list-item layout="row" flex="100" ng-repeat="(key, identified) in currentSchool.identifiedTags | orderBy:sortType:sortReverse | filter: SearchTerm" class="md-whiteframe-5dp">
+                                        <md-list-item layout="row" flex="100" ng-repeat="(key, identified) in currentSchool.identifiedTags | orderBy:sortType:sortReverse | filter: SearchTerm track by $index" class="md-whiteframe-5dp">
                                             
                                             <div flex="10"class="personListing">{{identified.tag}}</div>
                                             <div flex="70"class="personListing">{{identified.description}}</div>
