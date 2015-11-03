@@ -71,13 +71,13 @@
                                         streetAdress1 : String,
                                         streetAdress2 : String, 
                                         city          : String,
-                                        State         : String,
+                                        state         : String,
                                         postalCode   : String, 
                                        },
             number                  : String,
             email                   : String,
             // IdentifiedTagsId        : {type : mongoose.Schema.ObjectId, ref:'IdentifiedTags'},
-            IdentifiedTagsId        : [],
+            IdentifiedTagsId        : Array,
         })
 
          var GradeSchema = mongoose.Schema({

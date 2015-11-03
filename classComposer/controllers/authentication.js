@@ -79,13 +79,15 @@ var authenticationController = {
     // It is safer to send as post, however, because the actual data won't
     // show up in browser history.
     var user = new User({
+      firstName : req.body.firstName,
+      lastName  : req.body.lastName,
+      role      : req.body.role,
       username  : req.body.username,
       password  : req.body.password,
       email     : req.body.email,
-      role      : req.body.role,
       school    : {
-                    assigned  : req.body.school.assigned,
-                    id        : req.body.school.id,
+                    assigned  : false,
+                    id        : '56384853ff4e1eb06e52407f',
                   },
     });
 

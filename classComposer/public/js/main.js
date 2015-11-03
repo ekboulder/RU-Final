@@ -35,7 +35,6 @@ app.service('httpService', ['$http', function($http){
 			},
 			function (error){
 				console.log('error')
-				translationRequest.result = 'Please try again'
 			})
 		}
 }])
@@ -89,9 +88,6 @@ app.controller('mainController', ['$scope', '$http','$mdBottomSheet','$mdSidenav
 			authService.authCheck(function(user) {
 				console.log('USER!', user) 
 				$scope.user = user
-				if (user.school.assigned) {
-					initializeInputSchool()
-				}
 			})
 	
 		// for the Bootstrap scroll
@@ -151,12 +147,12 @@ app.controller('mainController', ['$scope', '$http','$mdBottomSheet','$mdSidenav
 				
 
 				$scope.inputSchool = {}
-				var initializeInputSchool = function () {
-					return httpService.httpRequest('GET', '/data/defaultSchool', {}, initializeInputSchoolSync)
-				}
-				var initializeInputSchoolSync = function (serverResponse) {
-					$scope.inputSchool = serverResponse
-				}
+				// var initializeInputSchool = function () {
+				// 	return httpService.httpRequest('GET', '/data/defaultSchool', {}, initializeInputSchoolSync)
+				// }
+				// var initializeInputSchoolSync = function (serverResponse) {
+				// 	$scope.inputSchool = serverResponse
+				// }
 				
 
 

@@ -1,6 +1,6 @@
 // require needed Models
 var User = require('../models/user');
-var School = require('../models/schoolModel')
+var Models = require('../models/schoolModel')
 
 
 //set default identifiers
@@ -46,46 +46,23 @@ var defaultIdentifiers =[
 						 	value		: false,
 						 },
 						 ]
-var getDefaultSchool = function(req, res) {
-	var defaultSchool = {
-						contactPerson		: req.user._id,
-						name                : '',
-			            address             : {
-			                                    streetAdress1 : '',
-		                                        streetAdress2 : '', 
-		                                        city          : '',
-		                                        State         : '',
-		                                        postalCode   : '', 
-		                                       },
-			            number             	: '',
-			            email               : '',
-			            IdentifiedTagsId	: defaultIdentifiers,
-						}
-	res.send(defaultSchool)
-}
 
 var addSchool = function(req, res){
-	console.log('adding School')
-	console.log(req.body)
-  	res.send('success')
+	req.body.contactPerson 		= req.user._id
+	req.body.IdentifiedTagsId 	= defaultIdentifiers
+	req.body.address.streetAdress2 = req.body.address.streetAdress2 || ''
 
-
-
-
-
-
-
-  	// /res.sendFile('/html/home.html', {root : './public'})
-}
-
-// var getLoggedInSettings = function (req, res) {
-// 	console.log("on to settings")
-// 	console.log('req query:', req.query)
-// 	res.sendFile('/html/settings.html',{root : './public'})
-
-// }
+	console.log('adding School',req.body)
+	var newSchool = new Models.School({ School : req.body})
+	newSchool.save(function(err, document){
+      	if(err) return res.send({error : 'An error occured, please try again'})	
+		else {
+			  User.update({ _id: req.user._id }, {$set: {'school.assigned' : true, 'school.id' : document._id }}).exec()
+			  res.send('document')
+			}
+    })
+  }
 
 module.exports = {
-	getDefaultSchool		: getDefaultSchool,
 	addSchool				: addSchool,
 }

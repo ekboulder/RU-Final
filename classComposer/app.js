@@ -74,7 +74,6 @@ app.get('/loggedIn/home.html',loggedInCtrl.getLoggedInHome)
 app.get('/loggedIn/settings.html', loggedInCtrl.getLoggedInSettings)
 
 // accessing data from the database
-app.get('/data/defaultSchool', schoolCtrl.getDefaultSchool)
 app.post('/data/newSchool', schoolCtrl.addSchool)
 
 // Creating Server and Listening for Connections \\
