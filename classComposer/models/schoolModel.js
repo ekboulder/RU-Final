@@ -16,10 +16,10 @@
         })
 
         var StudentGradeProfileSchema = mongoose.Schema({
+            schoolYear                    :   Number,
             studentId               :   {type : mongoose.Schema.ObjectId, ref:'Student'},
-            grade                   :   {type : mongoose.Schema.ObjectId, ref:'Grade'},
+            grade                   :   String,
             currentTeacherId        :   {type : mongoose.Schema.ObjectId, ref:'Teacher'},
-            year                    : Number,
             academicScores          : {
                                         Reading     : Number,
                                         Writing     : Number,
@@ -41,26 +41,26 @@
     
          })
         
-        var IdentifiedTagsSchema = mongoose.Schema({
-            schoolId                : {type : mongoose.Schema.ObjectId, ref:'School'},
-            studentId               : {type : mongoose.Schema.ObjectId, ref:'Student'},
-            Identifiers             : [
-                                        {
-                                            tag             : String,
-                                            description     : String,
-                                            value           : {type: Boolean, default: false, },
-                                        },
-                                      ], 
-        })
+        // var IdentifiedTagsSchema = mongoose.Schema({
+        //     schoolId                : {type : mongoose.Schema.ObjectId, ref:'School'},
+        //     studentId               : {type : mongoose.Schema.ObjectId, ref:'Student'},
+        //     Identifiers             : [
+        //                                 {
+        //                                     tag             : String,
+        //                                     description     : String,
+        //                                     value           : {type: Boolean, default: false, },
+        //                                 },
+        //                               ], 
+        // })
                                             
-        var ClassRoomSchema = mongoose.Schema({
-            teacher                 :   {type : mongoose.Schema.ObjectId, ref:'Teacher'},
-            grade                   :   {type : mongoose.Schema.ObjectId, ref:'Grade'},
-            students                : [ {type : mongoose.Schema.ObjectId, ref:'Student'} ],
-            boys                    : [ {type : mongoose.Schema.ObjectId, ref:'Student'} ], //result of above
-            girls                   : [ {type : mongoose.Schema.ObjectId, ref:'Student'} ], //result of above               
+        // var ClassRoomSchema = mongoose.Schema({
+        //     teacher                 :   {type : mongoose.Schema.ObjectId, ref:'Teacher'},
+        //     grade                   :   {type : mongoose.Schema.ObjectId, ref:'Grade'},
+        //     students                : [ {type : mongoose.Schema.ObjectId, ref:'Student'} ],
+        //     boys                    : [ {type : mongoose.Schema.ObjectId, ref:'Student'} ], //result of above
+        //     girls                   : [ {type : mongoose.Schema.ObjectId, ref:'Student'} ], //result of above               
 
-        })
+        // })
 
        
 
@@ -68,8 +68,8 @@
             contactPerson           : {type : mongoose.Schema.ObjectId, ref:'User'},
             name                    : String,
             address                 : {
-                                        streetAdress1 : String,
-                                        streetAdress2 : String, 
+                                        streetAddress1 : String,
+                                        streetAddress2 : String, 
                                         city          : String,
                                         state         : String,
                                         postalCode   : String, 
@@ -77,29 +77,32 @@
             number                  : String,
             email                   : String,
             // IdentifiedTagsId        : {type : mongoose.Schema.ObjectId, ref:'IdentifiedTags'},
-            IdentifiedTagsId        : Array,
+            identifiedTags          : Array,
+            grades                  : Array,
         })
 
-         var GradeSchema = mongoose.Schema({
-            gradeName               : String,
-            year                    : Number,
-            students                : [ {type : mongoose.Schema.ObjectId, ref:'Student'} ],
-            teachers                : [ {type : mongoose.Schema.ObjectId, ref:'Teachers'} ],
-            classRoom               : [ {type : mongoose.Schema.ObjectId, ref:'ClassRoom'} ],
+        //  var GradeSchema = mongoose.Schema({
+        //     gradeName               : String,
+        //     year                    : Number,
+        //     students                : [ {type : mongoose.Schema.ObjectId, ref:'Student'} ],
+        //     teachers                : [ {type : mongoose.Schema.ObjectId, ref:'Teachers'} ],
+        //     classRoom               : [ {type : mongoose.Schema.ObjectId, ref:'ClassRoom'} ],
 
-        })
+        // })
 
         var TeacherSchema = mongoose.Schema({
+            school                  : [ {type : mongoose.Schema.ObjectId, ref:'School'} ],                  
             user                    : {type : mongoose.Schema.ObjectId, ref:'User'},
             firstName               : String,
             lastName                : String,
-            grade                   : Number,
+            grade                   : String,
             email                   : String,
-            studentsList            : {
-                                        year     : Number,
-                                        grade    : [ {type : mongoose.Schema.ObjectId, ref:'Grade'} ],
-                                        students : [ {type : mongoose.Schema.ObjectId, ref:'Student'} ],
-                                       },
+            studentsList            : [ {type : mongoose.Schema.ObjectId, ref:'Student'} ],
+            // studentsList            : {
+            //                             schoolYear     : Number,
+            //                             grade    : String,
+            //                             students : [ {type : mongoose.Schema.ObjectId, ref:'Student'} ],
+            //                            },
             
         })
 
@@ -115,9 +118,9 @@
 
         var Student             = mongoose.model('Student', studentSchema),
             StudentGradeProfile = mongoose.model('StudentGradeProfile', StudentGradeProfileSchema),
-            IdentifiedTags      = mongoose.model('IdentifiedTags', IdentifiedTagsSchema), 
-            ClassRoom           = mongoose.model('ClassRoom', ClassRoomSchema),
-            Grade               = mongoose.model('Grade', GradeSchema), 
+            // IdentifiedTags      = mongoose.model('IdentifiedTags', IdentifiedTagsSchema), 
+            // ClassRoom           = mongoose.model('ClassRoom', ClassRoomSchema),
+            // Grade               = mongoose.model('Grade', GradeSchema), 
             School              = mongoose.model('School', SchoolSchema),
             Teacher             = mongoose.model('Teacher', TeacherSchema), 
             Principal           = mongoose.model('Principal', PrincipalSchema) 
@@ -128,12 +131,12 @@
 module.exports = {
                 Student                 : Student,
                 StudentGradeProfile     : StudentGradeProfile,
-                IdentifiedTags          : IdentifiedTags,
-                ClassRoom               : ClassRoom,
-                Grade                   : Grade,
+                // IdentifiedTags          : IdentifiedTags,
+                // ClassRoom               : ClassRoom,
+                // Grade                   : Grade,
                 School                  : School,
                 Teacher                 : Teacher,
-                Principal               :Principal,
+                Principal               : Principal,
 }             
 
              

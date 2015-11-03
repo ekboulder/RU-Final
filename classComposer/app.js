@@ -74,7 +74,11 @@ app.get('/loggedIn/home.html',loggedInCtrl.getLoggedInHome)
 app.get('/loggedIn/settings.html', loggedInCtrl.getLoggedInSettings)
 
 // accessing data from the database
+app.get('/data/currentSchool', schoolCtrl.currentSchool)
 app.post('/data/newSchool', schoolCtrl.addSchool)
+// app.get('/data/currentTeachers', schoolCtrl.currentTeachers)
+app.post('/data/newTeacher', schoolCtrl.addTeacher)
+
 
 // Creating Server and Listening for Connections \\
 var port = 3000

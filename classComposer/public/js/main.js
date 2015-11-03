@@ -22,7 +22,7 @@ app.service('httpService', ['$http', function($http){
 
 		 this.httpRequest = function (method, url, data, callBack) {
 		
-			console.log('http please', method, url, data)
+			// console.log('http please', method, url, data)
 			
 			$http({
 				method 	: method,										//'POST'
@@ -38,8 +38,6 @@ app.service('httpService', ['$http', function($http){
 			})
 		}
 }])
-
-
 
 // Scroll service
 app.service('scrollService', ['$timeout','$location', '$anchorScroll',
@@ -78,16 +76,21 @@ app.config(['$routeProvider', function($routeProvider){
 			})
  }])
 
-
-
 // MainController
 app.controller('mainController', ['$scope', '$http','$mdBottomSheet','$mdSidenav', '$mdDialog','authService','scrollService', 'httpService', function($scope, $http, $mdBottomSheet, $mdSidenav, $mdDialog, authService, scrollService, httpService){
     
 		
 		// For Authentication
 			authService.authCheck(function(user) {
-				console.log('USER!', user) 
+				// console.log('USER!', user) 
 				$scope.user = user
+				
+				//in case the user already has a school assigned, let's retriev it.
+				if (user) {
+					if (user.school.assigned){
+						getSchool()
+					}
+				}
 			})
 	
 		// for the Bootstrap scroll
@@ -144,53 +147,61 @@ app.controller('mainController', ['$scope', '$http','$mdBottomSheet','$mdSidenav
 		    	})
 
 		// School and Tag Registration
-				
-
-				$scope.inputSchool = {}
-				// var initializeInputSchool = function () {
-				// 	return httpService.httpRequest('GET', '/data/defaultSchool', {}, initializeInputSchoolSync)
-				// }
-				// var initializeInputSchoolSync = function (serverResponse) {
-				// 	$scope.inputSchool = serverResponse
-				// }
-				
 
 
+			// sorting Lists (search teacher should be search item)
+				$scope.sortType     	= 'name'; // set the default sort type
+		  		$scope.sortReverse  	= false;  // set the default sort order
+		  		$scope.searchTeacher   	= '';     // set the default search/filter
+			//School	
 				$scope.currentSchool = {}
-				$scope.addSchool = function () {
-						// console.log($scope.inputSchool)
-						return httpService.httpRequest('POST', '/data/newSchool', $scope.inputSchool, addSchoolSync)	
+				$scope.inputSchool = {} 
+				
+				$scope.createSchool = function () {
+						return httpService.httpRequest('POST', '/data/newSchool', $scope.inputSchool, createSchoolSync)	
 		    	}
-		    	var addSchoolSync = function (serverResponse) {
-		   				$scope.currentSchool = serverResponse
-		   				// console.log('School', $scope.currentSchool)		
+		    	var createSchoolSync = function (newSchool) {
+		   				$scope.currentSchool = newSchool		
+		  		}
+
+				var getSchool = function () {
+						return httpService.httpRequest('GET', '/data/currentSchool', {}, getSchoolSync)	
+		    	}
+		    	var getSchoolSync = function (school) {
+		   				$scope.currentSchool = school
+
+
+		  		}
+			//teachers	
+		    	$scope.currentTeachers = []
+		    	$scope.inputTeacher = {}
+		    	$scope.createTeacher = function () {
+						return httpService.httpRequest('POST', '/data/newTeacher', $scope.inputTeacher, createTeacherSync)	
+		    	}
+		    	var createTeacherSync = function (newTeacher) {
+		   				$scope.currentTeachers.push(newTeacher)
+		   				$scope.inputTeacher = {
+		   										school                  : {},                  
+									            user                    : {},
+									            firstName               : '',
+									            lastName                : '',
+									            grade                   : inputTeacher.grade,
+									            email                   : '',
+									            studentsList            : [] 
+												}
+		   					
 		  		}
 
 
-
-				$scope.inputIdentifierTag = {}
+		    		$scope.inputIdentifierTag = {}
 			  	//update (modify identifier tag list)
 					$scope.addIdentifierTag = function () {
 						$scope.identifierTags.push($scope.inputIdentifierTag)
 			    		$scope.identifierTags = $scope.identifierTags.slice().reverse()
 			    		$scope.inputIdentifierTag = {}
 			    	}
-  
-				
 
-		// Teachers intitialization, adding and sorting
-		    	$scope.inputTeacher = {}
-		    	$scope.teachers = []
-		    	$scope.addTeacher = function () {
-		    		$scope.teachers.push($scope.inputTeacher)
-		    		$scope.teachers = $scope.teachers.slice().reverse()
-		    		$scope.inputTeacher = {}
-
-		    	}
-
-		    	$scope.sortType     	= 'name'; // set the default sort type
-		  		$scope.sortReverse  	= false;  // set the default sort order
-		  		$scope.searchTeacher   	= '';     // set the default search/filter
+		    	
 
 		    // 	$scope.sortPerson = function (persontype, sortingProperty) {
 		    // 		console.log("about to sort by", sortingProperty)

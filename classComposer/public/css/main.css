@@ -72,7 +72,15 @@ md-sidenav {
 /*for the select options dropdown*/
 .dropDown {
   padding-top : 20px;
+  margin-top:-2px;
 }
+.dropDown.ng-dirty {
+  padding-top:0px;
+margin-top:0px;
+}
+/*.dropDown:visited {
+  padding-top :0px;
+}*/
 
 /* for aligning the listing of teachers and students in the input forms to their headers*/
 .personListing {
