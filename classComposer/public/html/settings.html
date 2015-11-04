@@ -1,9 +1,9 @@
           </md-toolbar> 
-           <md-tabs md-stretch-tabs class="md-primary" md-selected="data.selectedIndex">
+           <md-tabs md-stretch-tabs class="md-primary" md-selected="data.selectedIndex">                 
                     <md-tab id="school" aria-controls="school-content">School</md-tab>
-                    <md-tab id="teachers" aria-controls="teachers-content">Teachers</md-tab>
-                    <md-tab id="students" aria-controls="students-content">Students</md-tab>
                     <md-tab id="identifierTags" aria-controls="identifierTags-content">Identifier Tags</md-tab>
+                    <md-tab id="teachers" aria-controls="teachers-content">Teachers</md-tab>
+                    <md-tab id="students" aria-controls="students-content">Students</md-tab>        
            </md-tabs>
           </md-toolbar>
 
@@ -32,29 +32,29 @@
                                   <div layout layout-sm="column"> 
                                       <md-input-container flex> 
                                         <label>School Name</label> 
-                                        <input ng-model="inputSchool.name"> 
+                                        <input ng-model="school.name"> 
                                       </md-input-container>   
                                   </div> 
                                   <div>
                                       <md-input-container flex> 
                                         <label>Address 1</label> 
-                                        <input ng-model="inputSchool.address.streetAddress1"> 
+                                        <input ng-model="school.address.streetAddress1"> 
                                       </md-input-container> 
                                       <md-input-container flex> 
                                         <label>Address 2</label> 
-                                        <input ng-model="inputSchool.address.streetAddress2"> 
+                                        <input ng-model="school.address.streetAddress2"> 
                                       </md-input-container> 
                                   </div>
                                   
                                   <md-content layout layout-sm="column" flex="100"> 
                                       <md-input-container flex="33"> 
                                         <label>City</label> 
-                                        <input ng-model="inputSchool.address.city"> 
+                                        <input ng-model="school.address.city"> 
                                       </md-input-container> 
                                   
                                       <md-input-container  flex="30">
                                         <label>State</label>
-                                        <md-select  class="dropDown" ng-model="inputSchool.address.state">
+                                        <md-select  class="dropDown" ng-model="school.address.state">
                                         <md-option ng-repeat="state in states" value="{{state.abbrev}}">
                                           {{state.abbrev}}
                                         </md-option>
@@ -63,7 +63,7 @@
                                  
                                       <md-input-container flex="33"> 
                                         <label>Postal Code</label> 
-                                        <input ng-model="inputSchool.address.postalCode"> 
+                                        <input ng-model="school.address.postalCode"> 
                                       </md-input-container> 
                              
                           </md-content>
@@ -71,27 +71,105 @@
                           <div layout layout-sm="column"> 
                                       <md-input-container flex> 
                                         <label>Phone Number</label> 
-                                        <input ng-model="inputSchool.number"> 
+                                        <input ng-model="school.number"> 
                                       </md-input-container> 
                                       <md-input-container flex> 
                                         <label>Email</label> 
-                                        <input ng-model="inputSchool.email"> 
+                                        <input ng-model="school.email"> 
                                       </md-input-container> 
                           </div> 
 
                                         <md-input-container> 
-                                          <md-button ng-click="createSchool()" class="md-raised md-primary">Save School Information</md-button>
+                                          <md-button ng-click="initializeSchool()" class="md-raised md-primary">Save School Information</md-button>
                                         </md-input-container> 
                             
                       </form> 
                     </md-content>
                   </div>
                   
+                <!-- start: Identifier Panel -->
+                  <div role="tabpanel"
+                       id="identifierTags-content"
+                       aria-labelledby="identifierTags"
+                       ng-switch-when="1"
+                       md-swipe-left="next()"
+                       md-swipe-right="previous()" 
+                       layout="row" layout-align="center center">
+
+                        <md-content class="md-padding" flex="60"> 
+                          <form name="identifierTagForm"> 
+                              <div layout layout-sm="column" flex="100"> 
+                      <!-- start: Left Side for adding identifierTags-->
+                              <div layout="column" flex="25" layout-padding>
+                                  <md-subheader style="padding-top:8px;">Add A New Identifier</md-subheader>
+                                  <md-divider></md-divider>
+                              
+                                        <md-input-container>  
+                                          <label>Identifier Tag</label> 
+                                          <input ng-model="inputIdentifierTag.tag"> 
+                                        </md-input-container> 
+                                        <md-input-container> 
+                                          <label>Identifier Description</label> 
+                                          <input ng-model="inputIdentifierTag.description"> 
+                                        </md-input-container> 
+   
+                                        <md-input-container> 
+                                          <md-button ng-click="createIdentifierTag()" class="md-raised md-primary">Add Identifier</md-button>
+                                        </md-input-container> 
+                                    
+                              </div>       
+                      <!-- end: Left Side for adding identifierTags-->
+                              <div flex="5"></div>
+                      <!-- start: Right Side for listing identifierTags-->
+                              <div layout="column" flex="60" layout-padding>
+
+                                    
+                                    <md-subheader>List of Identifiers</md-subheader>
+                                    <md-divider></md-divider>
+                                    <md-list>
+                                        <div layout flex="100">
+                                          <md-subheader flex="15">
+                                             <a ng-click="sortType = 'identifierTag.tag'; sortReverse = !sortReverse">Tag
+                                                    <span ng-show="sortType == 'identifierTag.tag' && !sortReverse">&#9650;</span>
+                                                    <span ng-show="sortType == 'identifierTag.tag' && sortReverse">&#9660;</span>
+                                             </a>
+                                          </md-subheader>
+
+                                          <md-subheader flex="80">
+                                            <a ng-click="sortType = 'identifierTag.description'; sortReverse = !sortReverse">Description
+                                                    <span ng-show="sortType == 'identifierTag.description' && !sortReverse">&#9650;</span>
+                                                    <span ng-show="sortType == 'identifierTag.description' && sortReverse">&#9660;</span>
+                                             </a>
+                                          </md-subheader>
+                                        </div>
+                                    
+                                    
+                                    
+                                        <md-list-item layout="row" flex="100" ng-repeat="(key, identified) in school.identifiedTags | orderBy:sortType:sortReverse | filter: SearchTerm track by $index" class="md-whiteframe-5dp">
+                                            
+                                            <div flex="10"class="personListing">{{identified.tag}}</div>
+                                            <div flex="70"class="personListing">{{identified.description}}</div>
+                                            
+                                            
+                                            <md-button class="md-icon-button" ng-click="deleteIdentifierTag(identified.tag, school.identifiedTags)">
+                                                <md-icon md-svg-src="/imgs/bin_delete.svg" aria-label="delete Item"></md-icon>
+                                            </md-button>
+                                             
+                                        </md-list-item> 
+                                    </md-list>
+                              </div>
+                      <!--  end: Right Side for listing identifierTags-->              
+                              </div>
+                          </form> 
+                        </md-content>    
+                  </div>
+
+
                 <!-- start: Teachers Panel -->
                   <div role="tabpanel"
                        id="teachers-content"
                        aria-labelledby="teachers"
-                       ng-switch-when="1"
+                       ng-switch-when="2"
                        md-swipe-left="next()"
                        md-swipe-right="previous()" 
                        layout="row" layout-align="center center">
@@ -189,7 +267,7 @@
                   <div role="tabpanel"
                        id="student-content"
                        aria-labelledby="students"
-                       ng-switch-when="2"
+                       ng-switch-when="3"
                        md-swipe-left="next()"
                        md-swipe-right="previous()" 
                        layout="row" layout-align="center center">
@@ -312,82 +390,7 @@
                   
 
 
-                <!-- start: Identifier Panel -->
-                  <div role="tabpanel"
-                       id="identifierTags-content"
-                       aria-labelledby="identifierTags"
-                       ng-switch-when="3"
-                       md-swipe-left="next()"
-                       md-swipe-right="previous()" 
-                       layout="row" layout-align="center center">
-
-                        <md-content class="md-padding" flex="60"> 
-                          <form name="teacherForm"> 
-                              <div layout layout-sm="column" flex="100"> 
-                      <!-- start: Left Side for adding identifierTags-->
-                              <div layout="column" flex="25" layout-padding>
-                                  <md-subheader style="padding-top:8px;">Add A New Identifier</md-subheader>
-                                  <md-divider></md-divider>
-                              
-                                        <md-input-container>  
-                                          <label>Identifier Tag</label> 
-                                          <input ng-model="inputIdentifierTag.tag"> 
-                                        </md-input-container> 
-                                        <md-input-container> 
-                                          <label>Identifier Description</label> 
-                                          <input ng-model="inputIdentifierTag.description"> 
-                                        </md-input-container> 
-   
-                                        <md-input-container> 
-                                          <md-button ng-click="createIdentifierTag()" class="md-raised md-primary">Add Identifier</md-button>
-                                        </md-input-container> 
-                                    
-                              </div>       
-                      <!-- end: Left Side for adding identifierTags-->
-                              <div flex="5"></div>
-                      <!-- start: Right Side for listing identifierTags-->
-                              <div layout="column" flex="60" layout-padding>
-
-                                    
-                                    <md-subheader>List of Identifiers</md-subheader>
-                                    <md-divider></md-divider>
-                                    <md-list>
-                                        <div layout flex="100">
-                                          <md-subheader flex="15">
-                                             <a ng-click="sortType = 'identifierTag.tag'; sortReverse = !sortReverse">Tag
-                                                    <span ng-show="sortType == 'identifierTag.tag' && !sortReverse">&#9650;</span>
-                                                    <span ng-show="sortType == 'identifierTag.tag' && sortReverse">&#9660;</span>
-                                             </a>
-                                          </md-subheader>
-
-                                          <md-subheader flex="80">
-                                            <a ng-click="sortType = 'identifierTag.description'; sortReverse = !sortReverse">Description
-                                                    <span ng-show="sortType == 'identifierTag.description' && !sortReverse">&#9650;</span>
-                                                    <span ng-show="sortType == 'identifierTag.description' && sortReverse">&#9660;</span>
-                                             </a>
-                                          </md-subheader>
-                                        </div>
-                                    
-                                    
-                                    
-                                        <md-list-item layout="row" flex="100" ng-repeat="(key, identified) in currentSchool.identifiedTags | orderBy:sortType:sortReverse | filter: SearchTerm track by $index" class="md-whiteframe-5dp">
-                                            
-                                            <div flex="10"class="personListing">{{identified.tag}}</div>
-                                            <div flex="70"class="personListing">{{identified.description}}</div>
-                                            
-                                            
-                                            <md-button class="md-icon-button" ng-click="deleteIdentifierTag(identified.tag, currentSchool.identifiedTags)">
-                                                <md-icon md-svg-src="/imgs/bin_delete.svg" aria-label="delete Item"></md-icon>
-                                            </md-button>
-                                             
-                                        </md-list-item> 
-                                    </md-list>
-                              </div>
-                      <!--  end: Right Side for listing identifierTags-->              
-                              </div>
-                          </form> 
-                        </md-content>    
-                  </div>
+               
 
 
               </ng-switch>  

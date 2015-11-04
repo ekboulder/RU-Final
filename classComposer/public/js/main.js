@@ -85,14 +85,15 @@ app.controller('mainController', ['$scope', '$http','$mdBottomSheet','$mdSidenav
 				// console.log('USER!', user) 
 				$scope.user = user
 				
-				//in case the user already has a school assigned, let's retriev it.
+				//in case the user already has a school assigned, let's retrieve it.
 				if (user) {
 					if (user.school.assigned){
+						console.log('getting school')
 						getSchool()
 					}
 				}
 			})
-	
+
 		// for the Bootstrap scroll
 			$scope.scrollTo = scrollService.scroll
 			$scope.greeting = 'greeting'
@@ -154,30 +155,33 @@ app.controller('mainController', ['$scope', '$http','$mdBottomSheet','$mdSidenav
 		  		$scope.sortReverse  	= false;  // set the default sort order
 		  		$scope.searchTeacher   	= '';     // set the default search/filter
 			//School	
-				$scope.currentSchool = {}
-				$scope.inputSchool = {} 
+				$scope.school = {}
 				
-				$scope.createSchool = function () {
-						return httpService.httpRequest('POST', '/data/newSchool', $scope.inputSchool, createSchoolSync)	
+				$scope.initializeSchool = function () {
+						console.log('initializing School', $scope.school )
+						return httpService.httpRequest('POST', '/data/initializeSchool', $scope.school, initializeSchoolSync)	
 		    	}
-		    	var createSchoolSync = function (newSchool) {
-		   				$scope.currentSchool = newSchool		
+		    	var initializeSchoolSync = function (newSchool) {
+		   				$scope.school = newSchool
+		   				console.log('new School', newSchool)		
 		  		}
 
 				var getSchool = function () {
-						return httpService.httpRequest('GET', '/data/currentSchool', {}, getSchoolSync)	
+						console.log ('in function get school')
+						return httpService.httpRequest('GET', '/data/getSchool', {}, getSchoolSync)	
 		    	}
 		    	var getSchoolSync = function (school) {
-		   				$scope.currentSchool = school
+						console.log ('Got School', school)
+		   				$scope.school = school
 		   				getTeachers(school._id)
 		  		}
 			//teachers	
 		    	$scope.currentTeachers = []
 		    	$scope.inputTeacher = {}
 		    	$scope.createTeacher = function () {
-						return httpService.httpRequest('POST', '/data/newTeacher', $scope.inputTeacher, createTeacheSync)	
+						return httpService.httpRequest('POST', '/data/newTeacher', $scope.inputTeacher, createTeacherSync)	
 		    	}
-		    	var createTeacheSync = function (newTeacher) {
+		    	var createTeacherSync = function (newTeacher) {
 		   				$scope.currentTeachers.push(newTeacher)
 		   				$scope.currentTeachers = $scope.currentTeachers.slice().reverse()
 		   				$scope.inputTeacher = {
@@ -191,20 +195,23 @@ app.controller('mainController', ['$scope', '$http','$mdBottomSheet','$mdSidenav
 												}
 		  		}
 		  		var getTeachers = function (schoolId) {
-		  			console.log(schoolId)
+		  			console.log('getting teachers form school id', schoolId)
 		  			return httpService.httpRequest('GET', '/data/currentTeachers?id='+schoolId, {}, getTeachersSync)	
 		    	}
 		    	var getTeachersSync = function (teachersArray) {
+		    			console.log ('here is the retrieved teacher Array')
 		    			$scope.currentTeachers = teachersArray
 		    			$scope.currentTeachers = $scope.currentTeachers.slice().reverse()
 		    	}
 		  		
 		    	$scope.inputIdentifierTag = {}
 		    	$scope.createIdentifierTag = function () {
-		    		return httpService.httpRequest('POST', '/data/newIdentifierTag', { schoolId: $scope.currentSchool._id , tag : $scope.inputIdentifierTag} , createSchoolSync)	
+		    		return httpService.httpRequest('POST', '/data/updateSchool', { updateRequest: 'newTag', schoolId: $scope.school._id , tag : $scope.inputIdentifierTag} , createSchoolSync)	
 		    	}
 		    	var createSchoolSync = function (school) {
-		    		$scope.currentSchool = school
+		    		console.log('just updated this school:', school._id)
+		    		$scope.school = school
+		    		$scope.inputIdentifierTag = {}
 		    	}
 		    	$scope.deleteIdentifierTag = function (passedTag, identifiedTags) {
 		    		var selectedIndex;
@@ -215,13 +222,14 @@ app.controller('mainController', ['$scope', '$http','$mdBottomSheet','$mdSidenav
 										    		return true
 										    		}
 											})[0]	    			
-		    		return httpService.httpRequest('POST', '/data/deleteIdentifierTag', { schoolId: $scope.currentSchool._id , index : selectedIndex} , deleteIdentifierTagSync)	
+		    		return httpService.httpRequest('POST', '/data/updateSchool', { updateRequest: 'removeTag', schoolId: $scope.school._id , index : selectedIndex} , deleteIdentifierTagSync)	
 		    	}
 		    	var deleteIdentifierTagSync = function (school) {
-		    		$scope.currentSchool = school
+		    		$scope.school = school
+		    		$scope.inputIdentifierTag = {}
 		    	}
 
-// ng-click="deleteIdentifierTag(identified.tag, currentSchool.identifiedTags)"
+// ng-click="deleteIdentifierTag(identified.tag, school.identifiedTags)"
 // dnd-moved=            "onMove(student.id,     listByGender.studentList)"
 
 // $scope.onMove = function(passedId, listByGender){

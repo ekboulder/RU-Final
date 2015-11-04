@@ -18,14 +18,20 @@
                                        },
             number                  : String,
             email                   : String,
-            identifiedTags          : Array,
-            schoolYear               : [ 
+            identifiedTags          : [
+                                        {
+                                            tag          : String,
+                                            description  : String,
+                                            value        : {type: Boolean, default: false, },
+                                        },
+                                       ], 
+            schoolYears             : [ 
                                         { 
                                           year   : Number, 
                                           grades : [
                                                     { 
                                                       grade: String,
-                                                      Classrooms : 
+                                                      classrooms : 
                                                                     [ 
                                                                         {
                                                                             teacher   : [{type : mongoose.Schema.ObjectId, ref:'Teacher'}],
@@ -54,36 +60,36 @@
             gender                  : String,
             studentGradeProfile     : [ 
                                         {
-                                        schoolYear              : Number,
-                                        school                  : {type : mongoose.Schema.ObjectId, ref:'School'},
-                                        grade                   : String,                                    
-                                        currentTeacherId        : {type : mongoose.Schema.ObjectId, ref:'Teacher'},
-                                        academicScores          : {
-                                                                    Reading     : Number,
-                                                                    Writing     : Number,
-                                                                    Math        : Number,
-                                                                    Avg         : Number, //Result of the above
-                                                                  },
-                                        lifeSkillsScores        : {
-                                                                    Behavior    : Number,
-                                                                    WorkSkills  : Number,
-                                                                    Avg         : Number, //result of the above
-                                                                  },
-                                        rank                    : Number,                  //result of the bove
-                                        identifiedTags          : [
-                                                                    {
-                                                                        tag          : String,
-                                                                        description  : String,
-                                                                        value        : {type: Boolean, default: false, },
+                                        schoolYear          : Number,
+                                        school              : {type : mongoose.Schema.ObjectId, ref:'School'},
+                                        grade               : String,                                    
+                                        currentTeacherId    : {type : mongoose.Schema.ObjectId, ref:'Teacher'},
+                                        academicScores      : {
+                                                                Reading     : Number,
+                                                                Writing     : Number,
+                                                                Math        : Number,
+                                                                Avg         : Number, //Result of the above
+                                                              },
+                                        lifeSkillsScores    : {
+                                                                Behavior    : Number,
+                                                                WorkSkills  : Number,
+                                                                Avg         : Number, //result of the above
+                                                              },
+                                        rank                : Number,                  //result of the bove
+                                        identifiedTags      : [
+                                                                {
+                                                                    tag          : String,
+                                                                    description  : String,
+                                                                    value        : {type: Boolean, default: false, },
 
-                                                                    }
-                                                                   ],        
-                                        specialRequests         : {
-                                                                    targetTeacherId         :   {type : mongoose.Schema.ObjectId, ref:'Teacher'},
-                                                                    combinedStudentIds      : [ {type : mongoose.Schema.ObjectId, ref:'Student'} ],
-                                                                    separatedStudentIds     : [ {type : mongoose.Schema.ObjectId, ref:'Student'} ],
-                                                                  },
-                                        }
+                                                                },
+                                                              ],        
+                                        specialRequests     : {
+                                                                targetTeacherId         :   {type : mongoose.Schema.ObjectId, ref:'Teacher'},
+                                                                combinedStudentIds      : [ {type : mongoose.Schema.ObjectId, ref:'Student'} ],
+                                                                separatedStudentIds     : [ {type : mongoose.Schema.ObjectId, ref:'Student'} ],
+                                                              },
+                                        },
                                     ],
         })
 

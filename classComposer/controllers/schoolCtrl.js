@@ -2,8 +2,8 @@
 var User = require('../models/user');
 var Models = require('../models/schoolModel')
 
-//set default identifiers
-var defaultIdentifiers =[
+//set default variables
+	var defaultIdentifiers =[
 						 {
 						 	tag 		: 'ELL',
 						 	description	: 'English Language Learner',
@@ -45,38 +45,107 @@ var defaultIdentifiers =[
 						 	value		: false,
 						 },
 						 ]
+	var defaultSchoolYear = [ 
+								{
+									 year 	: 2015,
+									 grades :
+												[
+													{
+														grade 	: 'K',
+														classrooms : [],
+													},
+													{
+														grade 	: 'First',
+														classrooms : [],
+													},
+													{
+														grade 	: 'Second',
+														classrooms : [],
+													},
+													{
+														grade 	: 'Third',
+														classrooms : [],
+													},
+													{
+														grade 	: 'Fourth',
+														classrooms : [],
+													},
+													{
+														grade 	: 'Fourth',
+														classrooms : [],
+													},
+													{
+														grade 	: 'Fifth',
+														classrooms : [],
+													},
+												 ],
+								},
+							 ]
 
-    //Schools
-		var currentSchool = function(req,res){
-			// console.log(req.user)
-			// console.log('currentSchool id', req.user.school.id)
-			Models.School.findOne({_id: req.user.school.id}, function (err, school){
-				if (err) {
-					console.log(err)
-					res.send('could not find the school')
+
+	//School
+	var initializeSchool = function(req, res){
+		console.log('about to intialize School')
+		req.body.principal 				= req.user._id
+		req.body.address.streetAddress2 = req.body.address.streetAddress2 || ''
+		req.body.identifiedTags 		= defaultIdentifiers
+		req.body.schoolYears 			= defaultSchoolYear
+		
+		var newSchool = new Models.School(req.body)
+		newSchool.save(function(err, document){
+	      	if(err) return res.send({error : 'An error occured, please try again'})	
+			else {
+				  User.update({ _id: req.user._id }, {$set: {'school.assigned' : true, 'school.id' : document._id }}).exec()
+				  console.log('here is the new School', document)
+				  res.send(document)
 				}
-				else {
-					// console.log(school)
-					res.send(school)
+	    	})
+	 	}
+
+	var findSchool = function(schoolId, cb){
+		console.log('I am in find School')
+		Models.School.findOne({_id: schoolId}, function (err, school){
+			if (err) {
+				console.log(err)
+				res.send('could not find the school')
+				}
+			else {
+				console.log('I found this school:', school)
+				cb(school)
 				}
 			})
 		}
 
-		var addSchool = function(req, res){
-			req.body.contactPerson 		= req.user._id
-			req.body.identifiedTags 	= defaultIdentifiers
-			req.body.address.streetAddress2 = req.body.address.streetAddress2 || ''
+	var getSchool = function(req,res){
+		console.log('the school id is:', req.user.school.id )
+		findSchool (req.user.school.id, function(school) {
+				console.log('I am getting school', school)
+				res.send(school)
+				})
+		}
 
-			// console.log('adding School',req.body)
-			var newSchool = new Models.School(req.body)
-			newSchool.save(function(err, document){
-		      	if(err) return res.send({error : 'An error occured, please try again'})	
-				else {
-					  User.update({ _id: req.user._id }, {$set: {'school.assigned' : true, 'school.id' : document._id }}).exec()
-					  res.send(document)
+	var updateSchool = function(req,res){
+		console.log('I am in updating School')
+		findSchool (req.user.school.id, function(school){
+			console.log('update request is:', req.body.updateRequest)
+				
+				if (req.body.updateRequest === 'newTag' ) {
+		 			school.identifiedTags.push(req.body.tag)
+					school.markModified('identifiedTags')
+					} 
+				else if (req.body.updateRequest === 'removeTag') {
+							school.identifiedTags.splice(req.body.index, 1)
+							school.markModified('identifiedTags')
 					}
-		    })
-		  }
+				// else if (req.body.updateRequest ==== '') {
+
+				// }
+
+				school.save()
+				console.log('saving school:', school)
+				res.send(school)	
+				})	
+ 		}
 
     //Teachers   (grades)
  		var addTeacher = function(req,res){
@@ -124,46 +193,29 @@ var defaultIdentifiers =[
  			}
 
  	//Tags
- 		var addTag = function(req, res){
- 			Models.School.findOne({_id: req.body.schoolId}, function (err, school){
-				if (err) {
-					console.log(err)
-					res.send('could not find the school')
-				}
-				else {
-					school.identifiedTags.push(req.body.tag)
-					//push is not a mongoose function, so we need to save the modified document
-					school.markModified('identifiedTags')
-					school.save()
-					res.send(school)
-				}
-			})
- 			// Models.School.update({_id: req.body.schoolId}, {$set: {identifiedTags.push(req.body.tag)}}).exec()
- 		}
-		var removeTag = function(req, res){
-			console.log ('remove function', req.body)
- 			Models.School.findOne({_id: req.body.schoolId}, function (err, school){
-				if (err) {
-					console.log(err)
-					res.send('could not find the school')
-				}
-				else {
-					console.log('FOUND SCHOOL')
-					school.identifiedTags.splice(req.body.index, 1)
-					//splice is not a mongoose function, so we need to save the modified document
-					school.markModified('identifiedTags')
-					school.save()
-					res.send(school)
-				}
-			})
- 		}
 
 module.exports = {
-	addSchool				: addSchool,
-	currentSchool			: currentSchool,
+	initializeSchool		: initializeSchool,
+	getSchool				: getSchool,
+	updateSchool			: updateSchool,
 	currentTeachers 		: currentTeachers,
 	addTeacher 				: addTeacher,
-	addTag					: addTag,
-	removeTag				: removeTag,
 
 }
+
+
+
+
+
+
+// var currentSchool = function(req,res){
+// 		Models.School.findOne({_id: req.user.school.id}, function (err, school){
+// 			if (err) {
+// 				console.log(err)
+// 				res.send('could not find the school')
+// 			}
+// 			else {
+// 				res.send(school)
+// 			}
+// 		})
+// 	}

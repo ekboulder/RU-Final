@@ -74,12 +74,11 @@ app.get('/loggedIn/home.html',loggedInCtrl.getLoggedInHome)
 app.get('/loggedIn/settings.html', loggedInCtrl.getLoggedInSettings)
 
 // accessing data from the database
-app.get('/data/currentSchool', schoolCtrl.currentSchool)
-app.post('/data/newSchool', schoolCtrl.addSchool)
+app.post('/data/initializeSchool', schoolCtrl.initializeSchool)
+app.get('/data/getSchool', schoolCtrl.getSchool)
+app.post('/data/updateSchool', schoolCtrl.updateSchool)
 app.get('/data/currentTeachers', schoolCtrl.currentTeachers)
 app.post('/data/newTeacher', schoolCtrl.addTeacher)
-app.post('/data/newIdentifierTag', schoolCtrl.addTag)
-app.post('/data/deleteIdentifierTag', schoolCtrl.removeTag)
 
 
 // Creating Server and Listening for Connections \\
