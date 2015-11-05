@@ -121,6 +121,7 @@ var authenticationController = {
 
   // Handle logout requests
   logout: function(req, res){
+    console.log('log me out')
 
     // Passport injects the logout method for us to call
     req.logout();

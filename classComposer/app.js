@@ -1,7 +1,7 @@
 // Requires \\
 var express = require('express');
 var bodyParser = require('body-parser');
-
+// console.log = function(){}
 // Connect to DB
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/classComposerDb')
@@ -41,6 +41,7 @@ var schoolCtrl 		= require('./controllers/schoolCtrl')
 
 // This wil point to the Loged-out home page
 app.get('/', function(req, res){
+	console.log('in / route')
  	res.sendFile('/html/index.html', {root : './public'})
 });
 
@@ -79,6 +80,8 @@ app.get('/data/getSchool', schoolCtrl.getSchool)
 app.post('/data/updateSchool', schoolCtrl.updateSchool)
 app.get('/data/currentTeachers', schoolCtrl.currentTeachers)
 app.post('/data/newTeacher', schoolCtrl.addTeacher)
+app.get('/data/getStudents', schoolCtrl.getStudents)
+
 
 
 // Creating Server and Listening for Connections \\

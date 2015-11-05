@@ -372,8 +372,8 @@
                                                 <div flex="20" class="personListing">{{student.firstName}}</div>
                                                 <div flex="20" class="personListing">{{student.lastName}}</div>
                                                 <div flex="10" class="personListing">{{student.gender}}</div>
-                                                <div flex="10" class="personListing">{{student.grade}}</div>
-                                                <div flex="20" class="personListing">{{student.currentTeacherId}}</div>
+                                                <div flex="10" class="personListing">{{student.studentGradeProfile[0].grade}}</div>
+                                                <div flex="20" class="personListing">{{student.studentGradeProfile[0].currentTeacherId.firstName}} {{student.studentGradeProfile[0].currentTeacherId.lastName[0]}}.</div>
                                                 <div flex="10" class="personListing">
                                                 <md-button class="md-icon-button" ng-click="students.splice(key,1)">
                                                     <md-icon md-svg-src="/imgs/bin_delete.svg" aria-label="delete Item"></md-icon>

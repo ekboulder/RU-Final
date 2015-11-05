@@ -2,6 +2,7 @@
  var mongoose = require('mongoose')
  // We also will be using our User model
  var User = require('../models/user')
+ 
 
 	
 //define the schema
@@ -31,11 +32,11 @@
                                           grades : [
                                                     { 
                                                       grade: String,
-                                                      classrooms : 
+                                                      classRooms : 
                                                                     [ 
                                                                         {
-                                                                            teacher   : [{type : mongoose.Schema.ObjectId, ref:'Teacher'}],
-                                                                            students  : [ {type : mongoose.Schema.ObjectId, ref:'Student'} ],
+                                                                            teacherId   : {type : mongoose.Schema.ObjectId, ref:'Teacher'},
+                                                                            studentsIds  : [ {type : mongoose.Schema.ObjectId, ref:'Student'} ],
                                                                         },
                                                                     ]
                                                     },
@@ -46,8 +47,8 @@
 
 
          var TeacherSchema = mongoose.Schema({
-            school                  : {type : mongoose.Schema.ObjectId, ref:'School'},                  
-            user                    : {type : mongoose.Schema.ObjectId, ref:'User'},
+            schoolId                : {type : mongoose.Schema.ObjectId, ref:'School'},                  
+            userId                  : {type : mongoose.Schema.ObjectId, ref:'User'},
             firstName               : String,
             lastName                : String,
             email                   : String,
@@ -65,15 +66,15 @@
                                         grade               : String,                                    
                                         currentTeacherId    : {type : mongoose.Schema.ObjectId, ref:'Teacher'},
                                         academicScores      : {
-                                                                Reading     : Number,
-                                                                Writing     : Number,
-                                                                Math        : Number,
-                                                                Avg         : Number, //Result of the above
+                                                                reading     : Number,
+                                                                writing     : Number,
+                                                                math        : Number,
+                                                                avg         : Number, //Result of the above
                                                               },
                                         lifeSkillsScores    : {
-                                                                Behavior    : Number,
-                                                                WorkSkills  : Number,
-                                                                Avg         : Number, //result of the above
+                                                                behavior    : Number,
+                                                                workSkills  : Number,
+                                                                avg         : Number, //result of the above
                                                               },
                                         rank                : Number,                  //result of the bove
                                         identifiedTags      : [

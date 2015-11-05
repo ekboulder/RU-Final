@@ -94,6 +94,7 @@ app.controller('mainController', ['$scope', '$http','$mdBottomSheet','$mdSidenav
 				}
 			})
 
+
 		// for the Bootstrap scroll
 			$scope.scrollTo = scrollService.scroll
 			$scope.greeting = 'greeting'
@@ -173,15 +174,21 @@ app.controller('mainController', ['$scope', '$http','$mdBottomSheet','$mdSidenav
 		    	var getSchoolSync = function (school) {
 						console.log ('Got School', school)
 		   				$scope.school = school
+		   				//to do: should no longer get teachers this way bu rather get them from the school object
+		   				
 		   				getTeachers(school._id)
+		   				getStudents(school._id)
 		  		}
 			//teachers	
 		    	$scope.currentTeachers = []
 		    	$scope.inputTeacher = {}
 		    	$scope.createTeacher = function () {
+		    			console.log('about to send a teacher create request:', $scope.inputTeacher )
 						return httpService.httpRequest('POST', '/data/newTeacher', $scope.inputTeacher, createTeacherSync)	
 		    	}
 		    	var createTeacherSync = function (newTeacher) {
+		    			console.log('here is the new teacher:', newTeacher)
+
 		   				$scope.currentTeachers.push(newTeacher)
 		   				$scope.currentTeachers = $scope.currentTeachers.slice().reverse()
 		   				$scope.inputTeacher = {
@@ -194,21 +201,23 @@ app.controller('mainController', ['$scope', '$http','$mdBottomSheet','$mdSidenav
 									            studentsList            : [] 
 												}
 		  		}
+		  		
+		  		//to do: get teacher should get the teachers form the school object
 		  		var getTeachers = function (schoolId) {
 		  			console.log('getting teachers form school id', schoolId)
 		  			return httpService.httpRequest('GET', '/data/currentTeachers?id='+schoolId, {}, getTeachersSync)	
 		    	}
 		    	var getTeachersSync = function (teachersArray) {
-		    			console.log ('here is the retrieved teacher Array')
+		    			console.log ('here is the retrieved teacher Array', teachersArray)
 		    			$scope.currentTeachers = teachersArray
 		    			$scope.currentTeachers = $scope.currentTeachers.slice().reverse()
 		    	}
 		  		
 		    	$scope.inputIdentifierTag = {}
 		    	$scope.createIdentifierTag = function () {
-		    		return httpService.httpRequest('POST', '/data/updateSchool', { updateRequest: 'newTag', schoolId: $scope.school._id , tag : $scope.inputIdentifierTag} , createSchoolSync)	
+		    		return httpService.httpRequest('POST', '/data/updateSchool', { updateRequest: 'newTag', schoolId: $scope.school._id , tag : $scope.inputIdentifierTag} , createIdentifierTagSync)	
 		    	}
-		    	var createSchoolSync = function (school) {
+		    	var createIdentifierTagSync = function (school) {
 		    		console.log('just updated this school:', school._id)
 		    		$scope.school = school
 		    		$scope.inputIdentifierTag = {}
@@ -257,6 +266,8 @@ app.controller('mainController', ['$scope', '$http','$mdBottomSheet','$mdSidenav
 
 				$scope.inputStudent = {}
 		    	$scope.students = []
+				
+		    	// this should turn into a databse call
 				$scope.addStudent = function () {
 					$scope.students.push($scope.inputStudent)
 		    		$scope.students = $scope.students.slice().reverse()
@@ -267,6 +278,20 @@ app.controller('mainController', ['$scope', '$http','$mdBottomSheet','$mdSidenav
 		    								currentTeacherId 	: $scope.inputStudent.currentTeacherId,
 		    							}
 				}
+
+
+				var getStudents = function (schoolId) {
+		  			console.log('getting students form school id', schoolId)
+		  			return httpService.httpRequest('GET', '/data/getStudents?id='+schoolId, {}, getStudentsSync)	
+		    	}
+		    	var getStudentsSync = function (studentArray) {
+		    			console.log ('here is the retrieved student Array', studentArray)
+		    			$scope.students = studentArray
+		    			$scope.students = $scope.students.slice().reverse()
+		    	}
+		    	
+
+
 
 		
 		 // 	$scope.sortPerson = function (persontype, sortingProperty) {
