@@ -56,12 +56,7 @@
                   
                   <div layout='row' class='gradeLevelHeader'>
                         
-                        <div flex='25' class='gradeLevelTitle'> {{gradeLevel.grade}}
-                        </div>
-                        <div flex='5' class='gradeLevelclassRoomsPreview' ng-repeat="classRoom in gradeLevel.classRoomList" ng-class="{gradeLevelclassRoomsPreviewExanded : classRoom.expand }" ng-click='classRoomExpand($index)'>
-                        {{classRoom.teacher}} {{classRoom.expand}}
-                        </div>
-                        <div flex></div>
+                       
 
                   </div>
                   
@@ -69,75 +64,7 @@
                   <div layout='row' class='gradeLevelBody'>
                       <div flex='33' class='classRoom' ng-repeat="classRoom in gradeLevel.classRoomList | filter : classRoomExpanded">     
                           
-                          <div layout='row' class='classRoomHeader'>
-                                <div layout='column' flex='25' class="ClassRoomTeacher">
-                                    <h2>{{classRoom.teacher}}</h2>
-                                </div> <!-- flex 25 -->
-                                <div layout='column' flex='75' class='classRoomDashboard'>
-                                    <div layout='row' class='classRoomUpper'>
-                                          
-
-
-                                          <div layout='column' flex='50' class='classRoomAcademicAvg'>
-                                              <div class='header'>
-                                                  Academic Avg : {{classRoom.academic.academicAvg}}
-                                              </div>
-                                              <div layout='row' class='headerScores'>
-
-                                                  <div flex='33'>
-                                                  R : {{classRoom.academic.read}}
-                                                  </div>
-                                                  <div flex='33'>
-                                                  M : {{classRoom.academic.math}}
-                                                  </div>
-                                                  <div flex='33'> 
-                                                  W : {{classRoom.academic.writing}}
-                                                  </div>
-                                             
-                                              </div>
-                                          </div> <!-- classRoomAcademicAvg -->
-                                          
-
-
-
-                                          <div layout='column' flex='50' class='classRoomLifeSkillsAvg'>
-                                              <div class='header'>
-                                                  Life Skills Avg : {{classRoom.lifeSkills.lifeSkillsAvg}}
-                                              </div>
-                                              <div layout='row' class='headerScores'>
-
-                                                  <div flex='50'>
-                                                  B : {{classRoom.lifeSkills.behavior}}
-                                                  </div>
-                                                  <div flex='50'>
-                                                  WS : {{classRoom.lifeSkills.workSkills}}
-                                                  </div>
-                                             
-                                              </div>
-
-
-                                          </div> <!-- classRoomAcademicAvg -->
-                                   
-
-
-
-
-
-
-                                    </div>
-                                    <div layout='row' class='classRoomLower'>
-                                          <div flex='50' class='classRoomLastTeacher'>
-                                              <i class="material-icons">web</i>
-                                              
-                                          </div>
-                                          <div flex='50' class='classRoomIdentified'>
-                                            <i class="material-icons">web</i>
-                                            
-                                          </div>
-                                    </div>
-                                </div> <!-- flex 75 -->
-                          </div> <!-- row classRoomHeader -->
-                          
+                       
 
                           <div layout='row' class='classRoomBody'>
                                 <div flex='50' class='genderList' ng-class='listByGender.label' ng-repeat="listByGender in classRoom.studentBlocks">

@@ -1,4 +1,4 @@
-var app = angular.module('App', ['ui.bootstrap','ngMaterial', 'ngMdIcons', 'ngRoute', 'dndLists']);
+var app = angular.module('App', ['ui.bootstrap','ngMaterial', 'ngMdIcons', 'ngRoute', 'dndLists', 'chart.js']);
 
 // Authentication service
 app.service('authService', ['$http', '$location', function($http){
@@ -90,6 +90,11 @@ app.controller('mainController', ['$scope', '$http','$mdBottomSheet','$mdSidenav
 		
 		
 	////////////////////////////////////////////////////////////////////
+	//for the charts.
+	$scope.labels = ["K", "First", "Second","Thhird","Fourth","Fifth"];
+  	$scope.data = [15,14,10,18,22,17]
+
+
 	$scope.studentList = studentFactory.studentFactoryList
 	console.log('total Number of Students: ', $scope.studentList.length)
 	$scope.gradeLevel = studentFactory.schoolGradeFactoryList[0]

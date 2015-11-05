@@ -1,4 +1,9 @@
-<div>{{greeting}}</div>
+                        </md-toolbar> 
+           <md-tabs md-stretch-tabs class="md-primary" md-selected="data.selectedIndex">                 
+                    <md-tab id="school" aria-controls="school-content">School</md-tab>
+                    <md-tab id="identifierTags" aria-controls="identifierTags-content">Grade</md-tab>  
+           </md-tabs>
+          </md-toolbar>
 
 <!-- Settings -->
           <md-content flex md-scroll-y>
@@ -15,311 +20,25 @@
                        md-swipe-right="previous()"
                        layout="row" layout-align="center center"> 
 
-                        <div>{{greeting}}</div>
-                          
+                        
+                          <md-content class="md-padding" flex="60">
+                              
+                          <div layout='column'>                      
+                                <md-card class="card">
+                                    <img ng-src='/imgs/Dashboard.png'>
+                                </md-card>
+                                <md-card class="card">
+                                  <canvas id="pie" class="chart chart-pie" chart-data="data" chart-labels="labels"></canvas>
+                                </md-card>
+                                  
+                          </div>
+                     
                     </md-content>
                   </div>
                   
-                <!-- start: Teachers Panel -->
-                  <div role="tabpanel"
-                       id="teachers-content"
-                       aria-labelledby="teachers"
-                       ng-switch-when="1"
-                       md-swipe-left="next()"
-                       md-swipe-right="previous()" 
-                       layout="row" layout-align="center center">
-
-                        <md-content class="md-padding" flex="70"> 
-                          <form name="teacherForm"> 
-                              <div layout layout-sm="column" flex="100"> 
-                      <!-- start: Left Side for adding teachers-->
-                              <div layout="column" flex="25" layout-pdding>
-                                  <md-subheader style="padding-top:8px;">Add A New Teacher</md-subheader>
-                                  <md-divider></md-divider>
-                              
-                                        <md-input-container>  
-                                          <label>First Name</label> 
-                                          <input ng-model="inputTeacher.firstName"> 
-                                        </md-input-container> 
-                                        <md-input-container> 
-                                          <label>Last Name</label> 
-                                          <input ng-model="inputTeacher.lastName"> 
-                                        </md-input-container> 
-
-                                        <md-input-container> 
-                                          <label>email</label> 
-                                          <input ng-model="inputTeacher.email"> 
-                                        </md-input-container> 
-                                        <md-input-container class="dropDown">
-                                          <label>Grade</label>
-                                          <md-select class="select" ng-model="inputTeacher.grade">
-                                          <md-option ng-repeat="grade in grades" value="{{grade.grade}}">
-                                            {{grade.grade}}
-                                          </md-option>
-                                          </md-select>
-                                        </md-input-container>
-                                        
-                                        <md-input-container> 
-                                          <md-button ng-click="addTeacher()" class="md-raised md-primary">add Teacher</md-button>
-                                        </md-input-container> 
-                                    
-                              </div>       
-                      <!-- end: Left Side for adding teachers-->
-                              <div flex="5"></div>
-                      <!-- start: Right Side for listing teachers-->
-                              <div layout="column" flex="60" layout-padding>
-
-                                    
-                                    <md-subheader>List of Teachers</md-subheader>
-                                    <md-divider></md-divider>
-                                    <md-list>
-                                        <div layout flex="100">
-                                          <md-subheader flex="33">
-                                             <a ng-click="sortType = 'teacher.firstName'; sortReverse = !sortReverse">First Name
-                                                    <span ng-show="sortType == 'teacher.firstName' && !sortReverse">&#9650;</span>
-                                                    <span ng-show="sortType == 'teacher.firstName' && sortReverse">&#9660;</span>
-                                             </a>
-                                          </md-subheader>
-
-                                          <md-subheader flex="33">
-                                            <a ng-click="sortType = 'teacher.lastName'; sortReverse = !sortReverse">Last Name
-                                                    <span ng-show="sortType == 'teacher.lastName' && !sortReverse">&#9650;</span>
-                                                    <span ng-show="sortType == 'teacher.lastName' && sortReverse">&#9660;</span>
-                                             </a>
-                                          </md-subheader>
-                                          <md-subheader flex="33">
-                                            <a ng-click="sortType = 'teacher.grade'; sortReverse = !sortReverse">Grade
-                                                    <span ng-show="sortType == 'teacher.grade' && !sortReverse">&#9650;</span>
-                                                    <span ng-show="sortType == 'teacher.grade' && sortReverse">&#9660;</span>
-                                             </a>
-                                          </md-subheader>
-                                        </div>
-                                    
-                                    
-                                      
-                                        <md-list-item layout="row" flex="100" ng-repeat="(key, teacher) in teachers | orderBy:sortType:sortReverse | filter: SearchTerm" class="md-whiteframe-5dp">
-                                            
-                                            <div flex="33"class="personListing">{{teacher.firstName}}</div>
-                                            <div flex="33"class="personListing">{{teacher.lastName}}</div>
-                                            <div flex="20"class="personListing">{{teacher.grade}}</div>
-                                            
-                                            <md-button class="md-icon-button" ng-click="teachers.splice(key,1)">
-                                                <md-icon md-svg-src="/imgs/bin_delete.svg" aria-label="delete Item"></md-icon>
-                                            </md-button>
-                                             
-                                        </md-list-item> 
-                                    </md-list>
-                              </div>
-                      <!--  end: Right Side for listing teachers-->              
-                              </div>
-                          </form> 
-                        </md-content>    
-                  </div>
-
-                  
-                <!-- start: Student Panel -->
-                  <div role="tabpanel"
-                       id="student-content"
-                       aria-labelledby="students"
-                       ng-switch-when="2"
-                       md-swipe-left="next()"
-                       md-swipe-right="previous()" 
-                       layout="row" layout-align="center center">
-
-                      <md-content class="md-padding" flex="90"> 
-                          <form name="studentForm"> 
-                              <div layout layout-sm="column" flex="100"> 
-                
-                      <!-- start: Left Side for adding Students-->
-                              <div layout="column" flex="20" layout-pdding>
-                              <md-subheader style="padding-top:8px;">Add A New Student</md-subheader>
-                                <md-divider></md-divider>
-                                        
-                                        <md-input-container class="dropDown">
-                                            <label>Grade Level </label>
-                                            <md-select class="select" ng-model="inputStudent.grade">
-                                            <md-option ng-repeat="grade in grades" value="{{grade.grade}}">
-                                              {{grade.grade}}
-                                            </md-option>
-                                            </md-select>
-                                        </md-input-container>
-
-                                        <md-input-container class="dropDown">
-                                            <label>Current Teacher </label>
-                                            <md-select class="select" ng-model="inputStudent.currentTeacherId">
-                                            <md-option ng-repeat="teacher in teachers | filter: inputStudent.grade" value="{{teacher.firstName}}">
-                                              {{teacher.firstName}} {{teacher.lastName[0]}}
-                                            </md-option>
-                                            </md-select>
-                                        </md-input-container>
-                                        
-                                        
-                                        <md-input-container>  
-                                          <label>First Name</label> 
-                                          <input ng-model="inputStudent.firstName"> 
-                                        </md-input-container> 
-                                        <md-input-container> 
-                                          <label>Last Name</label> 
-                                          <input ng-model="inputStudent.lastName"> 
-                                        </md-input-container> 
-
-                                        <md-input-container> 
-                                           <md-radio-group ng-model="inputStudent.gender" layout>
-                                                <md-radio-button value="boy" class="md-primary">Boy</md-radio-button>
-                                                <md-radio-button value="girl">Girl</md-radio-button>  
-                                          </md-radio-group>
-                                          <hr />
-                                        
-                                        <md-input-container> 
-                                          <md-button ng-click="addStudent()" class="md-raised md-primary">Add Student</md-button>
-                                        </md-input-container> 
-                                    
-                                    </div>               
-                      <!-- end: Left Side for adding Students-->
-                                    <div flex="5"></div>
-                      <!--  start: Right Side for listing Students-->
-                                    <div layout="column" flex="75" layout-padding>
-                                        <md-subheader>List of Students</md-subheader>
-                                        <md-divider></md-divider>
-                                        <md-list>
-                                            
-                                        <!-- Set list headers and allows sorting by header -->
-                                            <div layout flex="100">
-                                              <md-subheader flex="20">
-                                                 <a ng-click="sortType = 'student.firstName'; sortReverse = !sortReverse">First Name
-                                                        <span ng-show="sortType == 'student.firstName' && !sortReverse">&#9650;</span>
-                                                        <span ng-show="sortType == 'student.firstName' && sortReverse">&#9660;</span>
-                                                 </a>
-                                              </md-subheader>
-
-                                              <md-subheader flex="20">
-                                                <a ng-click="sortType = 'student.lastName'; sortReverse = !sortReverse">Last Name
-                                                        <span ng-show="sortType == 'student.lastName' && !sortReverse">&#9650;</span>
-                                                        <span ng-show="sortType == 'student.lastName' && sortReverse">&#9660;</span>
-                                                 </a>
-                                              </md-subheader>
-                                              <md-subheader flex="10">
-                                                <a ng-click="sortType = 'student.gender'; sortReverse = !sortReverse">Gender
-                                                        <span ng-show="sortType == 'student.gender' && !sortReverse">&#9650;</span>
-                                                        <span ng-show="sortType == 'student.gender' && sortReverse">&#9660;</span>
-                                                 </a>
-                                              </md-subheader>
-                                              <md-subheader flex="10">
-                                                <a ng-click="sortType = 'student.grade'; sortReverse = !sortReverse">Grade
-                                                        <span ng-show="sortType == 'student.grade' && !sortReverse">&#9650;</span>
-                                                        <span ng-show="sortType == 'student.grade' && sortReverse">&#9660;</span>
-                                                 </a>
-                                              </md-subheader>
-                                              <md-subheader flex="20">
-                                                <a ng-click="sortType = 'student.teachcurrentTeacherIder'; sortReverse = !sortReverse">Current Teacher
-                                                        <span ng-show="sortType == 'student.teachcurrentTeacherIder' && !sortReverse">&#9650;</span>
-                                                        <span ng-show="sortType == 'student.teachcurrentTeacherIder' && sortReverse">&#9660;</span>
-                                                 </a>
-                                              </md-subheader>
-                                              <div flex></div>
-                                            </div>
-                                            
-                                            
-                                        <!-- Display student list -->
-                                            <md-list-item layout="row" flex="100" ng-repeat="(key, student) in students | filter : SearchTerm | orderBy:sortType:sortReverse" class="md-whiteframe-5dp">
-                                                 
-                                                <div flex="20" class="personListing">{{student.firstName}}</div>
-                                                <div flex="20" class="personListing">{{student.lastName}}</div>
-                                                <div flex="10" class="personListing">{{student.gender}}</div>
-                                                <div flex="10" class="personListing">{{student.grade}}</div>
-                                                <div flex="20" class="personListing">{{student.currentTeacherId}}</div>
-                                                <div flex="10" class="personListing">
-                                                <md-button class="md-icon-button" ng-click="students.splice(key,1)">
-                                                    <md-icon md-svg-src="/imgs/bin_delete.svg" aria-label="delete Item"></md-icon>
-                                                  </md-button>
-                                                </div>  
-                                            </md-list-item> 
-                                        </md-list>
-                                    </div>
-                      <!--  end: Right Side for listing students-->              
-                            </div>
-                          </form> 
-                      </md-content>    
-                  </div>
-                  
 
 
-                <!-- start: Identifier Panel -->
-                  <div role="tabpanel"
-                       id="identifierTags-content"
-                       aria-labelledby="identifierTags"
-                       ng-switch-when="3"
-                       md-swipe-left="next()"
-                       md-swipe-right="previous()" 
-                       layout="row" layout-align="center center">
-
-                        <md-content class="md-padding" flex="60"> 
-                          <form name="teacherForm"> 
-                              <div layout layout-sm="column" flex="100"> 
-                      <!-- start: Left Side for adding identifierTags-->
-                              <div layout="column" flex="25" layout-padding>
-                                  <md-subheader style="padding-top:8px;">Add A New Identifier</md-subheader>
-                                  <md-divider></md-divider>
-                              
-                                        <md-input-container>  
-                                          <label>Identifier Tag</label> 
-                                          <input ng-model="inputIdentifierTag.tag"> 
-                                        </md-input-container> 
-                                        <md-input-container> 
-                                          <label>Identifier Description</label> 
-                                          <input ng-model="inputIdentifierTag.description"> 
-                                        </md-input-container> 
-   
-                                        <md-input-container> 
-                                          <md-button ng-click="addIdentifierTag()" class="md-raised md-primary">Add Identifier</md-button>
-                                        </md-input-container> 
-                                    
-                              </div>       
-                      <!-- end: Left Side for adding identifierTags-->
-                              <div flex="5"></div>
-                      <!-- start: Right Side for listing identifierTags-->
-                              <div layout="column" flex="60" layout-padding>
-
-                                    
-                                    <md-subheader>List of Identifiers</md-subheader>
-                                    <md-divider></md-divider>
-                                    <md-list>
-                                        <div layout flex="100">
-                                          <md-subheader flex="10">
-                                             <a ng-click="sortType = 'identifierTag.tag'; sortReverse = !sortReverse">Tag
-                                                    <span ng-show="sortType == 'identifierTag.tag' && !sortReverse">&#9650;</span>
-                                                    <span ng-show="sortType == 'identifierTag.tag' && sortReverse">&#9660;</span>
-                                             </a>
-                                          </md-subheader>
-
-                                          <md-subheader flex="80">
-                                            <a ng-click="sortType = 'identifierTag.description'; sortReverse = !sortReverse">Description
-                                                    <span ng-show="sortType == 'identifierTag.description' && !sortReverse">&#9650;</span>
-                                                    <span ng-show="sortType == 'identifierTag.description' && sortReverse">&#9660;</span>
-                                             </a>
-                                          </md-subheader>
-                                        </div>
-                                    
-                                    
-                                    
-                                        <md-list-item layout="row" flex="100" ng-repeat="(key, identifierTag) in identifierTags | orderBy:sortType:sortReverse | filter: SearchTerm" class="md-whiteframe-5dp">
-                                            
-                                            <div flex="10"class="personListing">{{identifierTag.tag}}</div>
-                                            <div flex="70"class="personListing">{{identifierTag.description}}</div>
-                                            
-                                            
-                                            <md-button class="md-icon-button" ng-click="IdentifierTags.splice(key,1)">
-                                                <md-icon md-svg-src="/imgs/bin_delete.svg" aria-label="delete Item"></md-icon>
-                                            </md-button>
-                                             
-                                        </md-list-item> 
-                                    </md-list>
-                              </div>
-                      <!--  end: Right Side for listing identifierTags-->              
-                              </div>
-                          </form> 
-                        </md-content>    
-                  </div>
+               
 
 
               </ng-switch>  

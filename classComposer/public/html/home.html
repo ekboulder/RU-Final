@@ -21,11 +21,17 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 <!-- javascript dependencies -->
+    
+
+
     <!-- jquery used for the animated signInModal / jquery code could be found in BootstrapUI_Cpntrollers.js under the ModalInstanceCtrl controller-->
       <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js" type="text/javascript"></script>
     <!--  AngularJS-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.5/angular.min.js" type="text/javascript"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.5/angular-route.js" type="text/javascript"></script>
+    <!-- for the Charts  -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-chart.js/0.8.5/angular-chart.min.js"></script>
     <!-- UI Bootstrap: https://angular-ui.github.io/bootstrap/ -->
     <script src="/js/ui-bootstrap-tpls-0.14.3.min.js" type="text/javascript"></script>
     <!-- Drag and Drop -->
@@ -39,12 +45,8 @@
         <md-sidenav layout="column" class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')" style="width: 200px; min-width:200px; max-width:200px;">
             
             <md-toolbar class="md-tall md-hue-2">
-                      <span flex></span>
                       <div layout="column" class="md-toolbar-tools-bottom inset">
-                        <user-avatar></user-avatar>
-                        <span></span>
-                        <div>{{user.firstName}} {{user.lastName}}</div>
-                        <div>{{user.email}}</div>
+                        <img class="logo" ng-src='/imgs/Logo.png'>
                       </div>
             </md-toolbar>
 
